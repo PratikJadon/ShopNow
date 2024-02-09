@@ -1,13 +1,16 @@
 package com.example.shopnow.Controller;
 
 import com.example.shopnow.Models.userModel;
-import com.example.shopnow.requestHandling.userRequest;
 import com.example.shopnow.Service.userService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -19,16 +22,19 @@ public class userController {
     private userService userService;
 
     @PostMapping("/signup")
-    ResponseEntity<String> signup(@RequestBody userModel user) {
-        if(userService.registerUser(user)){
-            return ResponseEntity.ok("User already exists with this Email.");
+    void signup(@Valid @RequestBody userModel user) {
+        if (userService.isEmailUnique(user.getEmail())) {
+            ResponseEntity.ok("User with this email already exists.");
+            return;
         }
+        if (userService.isUsernameUnique(user.getUsername())) {
+            ResponseEntity.ok("User with this username already exists.");
+            return;
+        }
+        userModel newUser = userService.registerUser(user);
         log.info("User Signup successful");
-        return ResponseEntity.ok("Sign Up Successful for user: " + user.getFullname());
+        ResponseEntity.ok().body(new HashMap<String,String>(){{
+            put("Message","User Registered with id " + newUser.getId());
+        }});
     }
-
-//    @PostMapping("/login")
-//    ResponseEntity<String> login(@RequestBody userModel user){
-//
-//    }
 }
