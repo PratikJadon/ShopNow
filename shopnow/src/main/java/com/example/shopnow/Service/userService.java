@@ -41,6 +41,6 @@ public class userService {
         return userRepo.findByEmail(email) != null;
     }
     public boolean isUsernameUnique(String username) {
-        return userRepo.findByEmail(username) != null;
+        return userRepo.findByUsername(username) != null;
     }
 }

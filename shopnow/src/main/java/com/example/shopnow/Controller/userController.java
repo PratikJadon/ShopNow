@@ -22,19 +22,29 @@ public class userController {
     private userService userService;
 
     @PostMapping("/signup")
-    void signup(@Valid @RequestBody userModel user) {
+    ResponseEntity signup(@Valid @RequestBody userModel user) {
         if (userService.isEmailUnique(user.getEmail())) {
-            ResponseEntity.ok("User with this email already exists.");
-            return;
+            log.warn("User with this email already exists.");
+            return ResponseEntity.ok().body(new HashMap<String, Object>() {{
+                put("Success", false);
+                put("Message", "User with this email already exists.");
+            }});
         }
         if (userService.isUsernameUnique(user.getUsername())) {
-            ResponseEntity.ok("User with this username already exists.");
-            return;
+            log.warn("User with this username already exists.");
+            return ResponseEntity.ok().body(new HashMap<String, Object>() {{
+                put("Success", false);
+                put("Message", "User with this username already exists.");
+            }});
         }
         userModel newUser = userService.registerUser(user);
         log.info("User Signup successful");
-        ResponseEntity.ok().body(new HashMap<String,String>(){{
-            put("Message","User Registered with id " + newUser.getId());
+        return ResponseEntity.ok().body(new HashMap<String, Object>() {{
+            log.info("User Successfully Registered.");
+            put("Success",true);
+            put("Message", "User Successfully Registered");
+            put("Id", newUser.getId());
+            put("Token", userService.tokenGen(newUser.getId()));
         }});
     }
 }
