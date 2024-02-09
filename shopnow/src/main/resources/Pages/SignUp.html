@@ -1,158 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ShopHere</title>
-  </head>
-  <body>
-    <style>
-      /* styles.css */
-      body {
-        height: 100vh;
-        background-image: url("bg.jpg");
-        background-size: cover; /* Adjusts the background image size to cover the entire container */
-        background-repeat: no-repeat; /* Prevents the background image from repeating */
-        background-position: center; /* Centers the background image */
-      }
-      .container {
-        max-width: 400px;
-        margin: 0 auto;
-        margin-left: 10%;
-        padding: 20px;
-        margin-top: 5rem;
-        border-radius: 50px;
-        background: #5d7b9a;
-      }
-      h1 {
-        text-align: center;
-      }
-      .form-group {
-        margin-bottom: 20px;
-      }
-      label {
-        display: block;
-        margin-bottom: 5px;
-      }
-      input[type="text"],
-      input[type="email"],
-      input[type="password"] {
-        width: 95%;
-        padding: 10px;
-        background-color: #ffffff;
-        border: none;
-        border-radius: 0.5rem;
-        cursor: pointer;
-      }
-      button {
-        width: 100%;
-        padding: 10px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      button:hover {
-        background-color: #0056b3;
-      }
-    </style>
-    <div class="container">
-      <h1>Sign Up</h1>
-      <form id="signup-form">
-        <div class="form-group">
-          <label for="fullname">Full Name</label>
-          <input type="text" id="fullname" name="fullname" required />
-        </div>
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" required />
-        </div>
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" name="username" required />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" required />
-        </div>
-        <div class="form-group">
-          <label for="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            required
-          />
-        </div>
-        <button type="submit">Sign Up</button>
-        <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-          Already have an account? Login now
-          <a
-            href="index.html"
-            class="font-medium text-primary-600 hover:underline dark:text-primary-500"
-            >click here!</a
-          >
-        </p>
-      </form>
-    </div>
-    <script>
-      // script.js
-      document
-        .getElementById("signup-form")
-        .addEventListener("submit", async function (event) {
-          event.preventDefault();
-          // Get form values
-          var fullname = document.getElementById("fullname").value;
-          var email = document.getElementById("email").value;
-          var username = document.getElementById("username").value;
-          var password = document.getElementById("password").value;
-          var regexUpperCase = /[A-Z]/; // Match uppercase letters
-          var regexLowerCase = /[a-z]/; // Match lowercase letters
-          var regexNumeric = /[0-9]/; // Match numeric digits
-          if (!regexUpperCase.test(password)) {
-            alert("Password must contain at least one uppercase letter.");
-            return; // Exit the function to prevent further execution
-          }
-          if (!regexLowerCase.test(password)) {
-            alert("Password must contain at least one lowercase letter.");
-            return; // Exit the function to prevent further execution
-          }
-          if (!regexNumeric.test(password)) {
-            alert("Password must contain at least one numeric digit.");
-            return; // Exit the function to prevent further execution
-          }
-          var confirmPassword =
-            document.getElementById("confirmPassword").value;
-          // Check if passwords match
-          if (password !== confirmPassword) {
-            alert("Passwords do not match");
-            return;
-          }
-          var formData = {
-            fullname: fullname,
-            email: email,
-            username: username,
-            password: password,
-          };
-          try {
-            // Send data to backend
-            const response = await fetch(
-              "http://localhost:8080/api/usersignup",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-              }
-            );
-            const data = await response.text();
-            console.log(data);
-          } catch (error) {
-            console.log("Some error occured.");
-          }
-        });
-    </script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopHere</title>
+</head>
+<body>
+
+
+<style>
+/* styles.css */
+body{
+      height: 100vh;
+      background-image: url("bg.jpg");
+      background-size: cover; /* Adjusts the background image size to cover the entire container */
+      background-repeat: no-repeat; /* Prevents the background image from repeating */
+      background-position: center; /* Centers the background image */
+}
+
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  margin-left: 10%;
+  padding: 20px;
+  margin-top: 5rem;
+  border-radius: 50px;
+  background: #5d7b9a
+
+}
+
+h1 {
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 95%;
+  padding: 10px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: .5rem;
+  cursor: pointer;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+</style>
+
+
+
+  <div class="container">
+    <h1>Sign Up</h1>
+    <form id="signup-form">
+      <div class="form-group">
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" name="fullname" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+      </div>
+      <button type="submit">Sign Up</button>
+      <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+        Already have an account? Login now <a href="login.html" class="font-medium text-primary-600 hover:underline dark:text-primary-500">click here!</a>
+    </p>
+    </form>
+  </div>
+
+
+<script>
+// script.js
+document.getElementById('signup-form').addEventListener('submit', function(event) {
+  event.preventDefault();
+  
+  // Get form values
+  var fullname = document.getElementById('fullname').value;
+  var email = document.getElementById('email').value;
+  var username = document.getElementById('username').value;
+  var password = document.getElementById('password').value;
+  var regexUpperCase = /[A-Z]/; // Match uppercase letters
+    var regexLowerCase = /[a-z]/; // Match lowercase letters
+    var regexNumeric = /[0-9]/;   // Match numeric digits
+
+    if (!regexUpperCase.test(password)) {
+        alert('Password must contain at least one uppercase letter.');
+        return; // Exit the function to prevent further execution
+    }
+
+    if (!regexLowerCase.test(password)) {
+        alert('Password must contain at least one lowercase letter.');
+        return; // Exit the function to prevent further execution
+    }
+
+    if (!regexNumeric.test(password)) {
+        alert('Password must contain at least one numeric digit.');
+        return; // Exit the function to prevent further execution
+    }
+  var confirmPassword = document.getElementById('confirmPassword').value;
+  
+  // Check if passwords match
+  if (password !== confirmPassword) {
+    alert('Passwords do not match');
+    return;
+  }
+  
+  var formData = {
+    fullname: fullname,
+    email: email,
+    username: username,
+    password: password
+  };
+
+  // Send data to backend
+  fetch('http://localhost:3000/formData', {
+    method: 'POST',
+    
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData)
+  })
+  .then(response => {
+    if (response.ok) {
+      // Successfully signed up
+      console.log('Signup successful');
+      // Redirect to another page or show a success message
+    } else {
+      // Error in signing up
+      console.error('Signup failed');
+      // Handle the error, show an error message, etc.
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    // Handle network errors or any other unexpected errors
+  });
+});
+
+</script>
+
+</body>
 </html>
