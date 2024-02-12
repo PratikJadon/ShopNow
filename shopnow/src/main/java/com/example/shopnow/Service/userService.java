@@ -22,6 +22,13 @@ public class userService {
     @Autowired
     private envKeys envkey;
 
+    public userModel loginAuthPass(userModel user) {
+        if(BCrypt.checkpw(user.getPassword(), userRepo.findByEmail(user.getEmail()).getPassword())){
+            return userRepo.findByEmail(user.getEmail());
+        }
+        return null;
+    }
+
     public userModel registerUser(userModel user) {
         String hashpass = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         user.setPassword(hashpass);
@@ -31,16 +38,17 @@ public class userService {
         return newUser;
     }
 
-    public String tokenGen(String id) {
+    public String tokenGen(userModel user) {
         String key = envkey.getSecretKey();
         Algorithm algo = Algorithm.HMAC256(key);
-        return JWT.create().withSubject(id).withExpiresAt(new Date(System.currentTimeMillis() + 300_000)).sign(algo);
+        return JWT.create().withSubject(user.getId()).withIssuer(user.getFullname()).withExpiresAt(new Date(System.currentTimeMillis() + 300_000)).sign(algo);
     }
 
-    public boolean isEmailUnique(String email) {
+    public boolean isEmailExist(String email) {
         return userRepo.findByEmail(email) != null;
     }
-    public boolean isUsernameUnique(String username) {
+
+    public boolean isUsernameExist(String username) {
         return userRepo.findByUsername(username) != null;
     }
 }
