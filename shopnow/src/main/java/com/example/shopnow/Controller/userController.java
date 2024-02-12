@@ -81,5 +81,6 @@ public class userController {
             put("Message","Logged in Successfully");
             put("Token",userService.tokenGen(loggedUser));
         }});
+
     }
 }
