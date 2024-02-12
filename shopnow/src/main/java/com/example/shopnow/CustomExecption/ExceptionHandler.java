@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 @Slf4j
 @RestControllerAdvice
-class ExpectionHanlder {
+class   ExpectionHanlder {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -31,5 +31,4 @@ class ExpectionHanlder {
         log.error(er.getMessage());
         return ResponseEntity.badRequest().body(er.getMessage());
     }
-
 }
