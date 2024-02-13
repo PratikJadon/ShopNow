@@ -1,13 +1,9 @@
 package com.example.shopnow.requestHandling;
 
 import com.example.shopnow.Models.userModel;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
-import lombok.Setter;
-
-//import javax.validation.constraints.NotBlank;
 
 public class userRequest {
     @Getter
