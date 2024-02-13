@@ -1,6 +1,7 @@
 package com.example.shopnow.CustomExecption;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -22,13 +23,12 @@ class   ExpectionHanlder {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        log.error(errors.toString());
+        log.debug("ArgumentNotValid -> "+errors);
         return ResponseEntity.badRequest().body(errors);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgException(IllegalArgumentException er) {
-        log.error(er.getMessage());
         return ResponseEntity.badRequest().body(er.getMessage());
     }
 }
