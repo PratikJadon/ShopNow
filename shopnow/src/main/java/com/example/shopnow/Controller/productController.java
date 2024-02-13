@@ -21,21 +21,13 @@ public class productController {
     @Autowired
     private productService prodService;
     @GetMapping
-    public ResponseEntity getProduct(@RequestParam(required = false) String category,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+    public ResponseEntity getProduct(@RequestParam(required = false) String category,@RequestParam(required = false) String searchKey,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
         Pageable pageable = PageRequest.of(page, size);
-        if(category != null){
-            log.info("Products fetched as per category");
-            Page<productModel> products = prodService.getProductByCategory(category,pageable);
-            return ResponseEntity.ok().body(new HashMap<String,Object>(){{
-                put("Success",true);
-                put("Data",products);
-            }});
-        }
-        log.info("Default Products fetched.");
-        Page<productModel> products =  prodService.getProduct(pageable);
+        List<productModel> products =  prodService.findProducts(category,searchKey,pageable);
         return ResponseEntity.ok().body(new HashMap<String,Object>(){{
             put("Success",true);
             put("Data",products);
+            put("Size",products.size());
         }});
     }
 }

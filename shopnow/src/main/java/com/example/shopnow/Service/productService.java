@@ -1,20 +1,18 @@
 package com.example.shopnow.Service;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.example.shopnow.Models.productModel;
-import com.example.shopnow.Models.userModel;
 import com.example.shopnow.Repository.productRepository;
-import com.example.shopnow.Repository.userRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.mindrot.jbcrypt.BCrypt;
+import org.hibernate.query.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -23,12 +21,27 @@ import java.util.List;
 public class productService {
     @Autowired
     private productRepository productRepo;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
-    public Page<productModel> getProduct(Pageable page){
-        return productRepo.findAll(page);
-    }
+    public List<productModel> findProducts(String category, String searchKeyword, Pageable pageable) {
+        Criteria criteria = new Criteria();
+        MatchOperation matchOps = null;
+        // Apply filtering based on category and searchKeyword
+        if (category != null) {
+            criteria.and("category").is(category);
+        }
+        if (searchKeyword != null) {
+            criteria.and("title").regex(searchKeyword, "i"); // Case-insensitive search
+        }
+        matchOps = Aggregation.match(criteria);
+        Aggregation aggregation = Aggregation.newAggregation(matchOps,
+                Aggregation.skip((long) pageable.getPageNumber() * pageable.getPageSize()),
+                Aggregation.limit(pageable.getPageSize())
+        );
+        List<productModel> products = mongoTemplate.aggregate(aggregation, "products", productModel.class).getMappedResults();
+        log.info("Products feched with condtions: Category->" + category + " and searchkey->" + searchKeyword + " and got result of size " + products.size());
 
-    public Page<productModel> getProductByCategory(String category,Pageable page){
-        return productRepo.findByCategory(category,page);
+        return products;
     }
 }
