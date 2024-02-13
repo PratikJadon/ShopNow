@@ -41,6 +41,7 @@ public class authMiddleware implements Filter {
         }
 
         // If the user is authenticated, proceed with the request
+        log.info("Token validated successfully.");
         chain.doFilter(request, response);
     }
 
@@ -48,23 +49,15 @@ public class authMiddleware implements Filter {
         // Extract token from the request (e.g., from Authorization header)
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            log.info("Token Found in request header.");
             return authorizationHeader.substring(7); // Remove "Bearer " prefix
         }
+        log.warn("Token not found in request header or format is incorrect.");
         return null;
     }
 
     private String isAuthenticated(HttpServletRequest request) {
         String userToken = extractToken(request);
         return jwtHelper.verifyJWT(userToken);
-    }
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        // Initialization logic, if needed
-    }
-
-    @Override
-    public void destroy() {
-        // Cleanup logic, if needed
     }
 }

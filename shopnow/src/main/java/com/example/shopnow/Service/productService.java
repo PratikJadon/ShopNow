@@ -5,9 +5,11 @@ import com.example.shopnow.Repository.productRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +24,7 @@ public class productService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public List<productModel> findProducts(String category, String searchKeyword, Pageable pageable) {
+    public List<productModel> findProducts(String sortByPrice, String category, String searchKeyword, Pageable pageable) {
         Criteria criteria = new Criteria();
         MatchOperation matchOps = null;
         // Apply filtering based on category and searchKeyword
@@ -33,12 +35,16 @@ public class productService {
             criteria.and("title").regex(searchKeyword, "i"); // Case-insensitive search
         }
         matchOps = Aggregation.match(criteria);
-        Aggregation aggregation = Aggregation.newAggregation(matchOps,
+        SortOperation sortOperation = null;
+        if (sortByPrice != null && (sortByPrice.equals("asc") || sortByPrice.equals("desc"))) {
+            sortOperation = Aggregation.sort(Sort.by(sortByPrice.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, "price"));
+        }
+        Aggregation aggregation = Aggregation.newAggregation(matchOps, sortOperation,
                 Aggregation.skip((long) pageable.getPageNumber() * pageable.getPageSize()),
                 Aggregation.limit(pageable.getPageSize())
         );
         List<productModel> products = mongoTemplate.aggregate(aggregation, "products", productModel.class).getMappedResults();
-        log.info("Products feched with condtions: Category->" + category + " and searchkey->" + searchKeyword + " and got result of size " + products.size());
+        log.info("Products feched with condtions: Category->" + category + ", sort->" + sortByPrice + " and searchkey->" + searchKeyword + " and got result of size " + products.size());
 
         return products;
     }

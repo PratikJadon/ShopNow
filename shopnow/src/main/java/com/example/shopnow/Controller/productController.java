@@ -20,9 +20,9 @@ public class productController {
     @Autowired
     private productService prodService;
     @GetMapping
-    public ResponseEntity getProduct(@RequestParam(required = false) String category,@RequestParam(required = false) String searchKey,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+    public ResponseEntity getProduct(@RequestParam(required = false) String sortPrice, @RequestParam(required = false) String category,@RequestParam(required = false) String searchKey,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
         Pageable pageable = PageRequest.of(page, size);
-        List<productModel> products =  prodService.findProducts(category,searchKey,pageable);
+        List<productModel> products =  prodService.findProducts(sortPrice,category,searchKey,pageable);
         return ResponseEntity.ok().body(new HashMap<String,Object>(){{
             put("Success",true);
             put("Data",products);
