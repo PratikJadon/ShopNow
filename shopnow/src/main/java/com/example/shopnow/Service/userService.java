@@ -1,17 +1,13 @@
 package com.example.shopnow.Service;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.example.shopnow.Models.userModel;
 import com.example.shopnow.Repository.userRepository;
+import com.example.shopnow.utils.jwtHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Value;
-import com.example.shopnow.envKeys;
 
-import java.util.Date;
 
 
 @Slf4j
@@ -19,8 +15,9 @@ import java.util.Date;
 public class userService {
     @Autowired
     private userRepository userRepo;
+
     @Autowired
-    private envKeys envkey;
+    private jwtHelper jwtHelper;
 
     public userModel loginAuthPass(userModel user) {
         if(BCrypt.checkpw(user.getPassword(), userRepo.findByEmail(user.getEmail()).getPassword())){
@@ -39,9 +36,7 @@ public class userService {
     }
 
     public String tokenGen(userModel user) {
-        String key = envkey.getSecretKey();
-        Algorithm algo = Algorithm.HMAC256(key);
-        return JWT.create().withSubject(user.getId()).withIssuer(user.getFullname()).withExpiresAt(new Date(System.currentTimeMillis() + 300_000)).sign(algo);
+        return jwtHelper.tokenGen(user);
     }
 
     public boolean isEmailExist(String email) {
