@@ -9,95 +9,97 @@
       rel="stylesheet"
     />
   </head>
-  <body
-    class="h-screen "
-  >
+  <body class="h-screen">
     <script
-      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+      src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js"
       defer
     ></script>
 
     <div x-data="{ cartOpen: false , isOpen: false }" class="bg-white">
       <header>
-        <div class="container mx-auto px-3 py-3 ">
-          <div class="bg-gradient-to-tl from-green-400 to-indigo-900 flex flex-col">
-          <div class="flex items-center justify-between bg-gradient-to-tl from-green-400 to-indigo-900">
-            <div class="hidden w-full text-gray-600 md:flex md:items-center ">
-              
-          
-            
-            
-          <nav
-            :class="isOpen ? '' : 'hidden'"
-            class="sm:flex sm:justify-center sm:items-center mt-4"
-          >
+        <div class="container mx-auto px-3 py-3">
           <div
-                class="w-full whitespace-nowrap text-white md:text-left text-2xl font-semibold mr-5 ml-5 mb-2"
-              >Shop Now</div>
-            <div class="flex flex-col sm:flex-row">
-              <a
-                class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
-                href="dashboard.html"
-                >Home</a
-              >
-              
-              <a
-                class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
-                href="#"
-                >Men</a
-              >
-              <a
-                class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
-                href="#"
-                >Women</a
-              >
-              <a
-                class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
-                href="#"
-                >Shop</a
-              >
-            </div>
-          </nav>
-          <div class="flex items-center justify-end w-full c mr-10">
-              
-              <button
-                @click="cartOpen = !cartOpen"
-                class="text-white focus:outline-none mx-4 sm:mx-0"
-              >
-                <svg
-                  class="h-5 w-5"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+            class="bg-gradient-to-tl from-green-400 to-indigo-900 flex flex-col"
+          >
+            <div
+              class="flex items-center justify-between bg-gradient-to-tl from-green-400 to-indigo-900"
+            >
+              <div class="hidden w-full text-gray-600 md:flex md:items-center">
+                <nav
+                  :class="isOpen ? '' : 'hidden'"
+                  class="sm:flex sm:justify-center sm:items-center mt-4"
                 >
-                  <path
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                  ></path>
-                </svg>
-              </button>
-              <button class="text-white mx-5"><a href="login.html"><b>Logout</b></a></button>
-              <div class="flex sm:hidden">
-                <button
-                  @click="isOpen = !isOpen"
-                  type="button"
-                  class="text-gray-600 hover:text-gray-500 focus:outline-none focus:text-gray-500"
-                  aria-label="toggle menu"
-                >
-                  <svg viewBox="0 0 24 24" class="h-6 w-6 fill-current">
-                    <path
-                      fill-rule="evenodd"
-                      d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
-                    ></path>
-                  </svg>
-                </button>
+                  <div
+                    class="w-full whitespace-nowrap text-white md:text-left text-2xl font-semibold mr-5 ml-5 mb-2"
+                  >
+                    Shop Now
+                  </div>
+                  <div class="flex flex-col sm:flex-row">
+                    <a
+                      class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
+                      href="dashboard.html"
+                      >Home</a
+                    >
+
+                    <a
+                      class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
+                      href="#"
+                      >Men</a
+                    >
+                    <a
+                      class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
+                      href="#"
+                      >Women</a
+                    >
+                    <a
+                      class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
+                      href="#"
+                      >Shop</a
+                    >
+                  </div>
+                </nav>
+                <div class="flex items-center justify-end w-full mr-10">
+                  <button
+                    @click="cartOpen = !cartOpen"
+                    class="text-white focus:outline-none mx-4 sm:mx-0"
+                  >
+                    <svg
+                      class="h-5 w-5"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                      ></path>
+                    </svg>
+                  </button>
+                  <button class="text-white mx-5">
+                    <a href="login.html"><b>Logout</b></a>
+                  </button>
+                  <div class="flex sm:hidden">
+                    <button
+                      @click="isOpen = !isOpen"
+                      type="button"
+                      class="text-gray-600 hover:text-gray-500 focus:outline-none focus:text-gray-500"
+                      aria-label="toggle menu"
+                    >
+                      <svg viewBox="0 0 24 24" class="h-6 w-6 fill-current">
+                        <path
+                          fill-rule="evenodd"
+                          d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-          </div>
       </header>
       <div
         :class="cartOpen ? 'translate-x-0 ease-out' : 'translate-x-full ease-in'"
@@ -299,13 +301,118 @@
         </a>
       </div>
       <main class="my-8">
-        <div class="container mx-auto px-6 ">
-            
-          
+        <div class="container mx-auto px-6">
+          <div
+            id="productList"
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-8"
+          >
+            <!-- Products will be dynamically added here -->
+          </div>
+
+          <!-- Pagination -->
+          <div id="pagination" class="mt-8">
+            <button
+              onclick="prevPage()"
+              class="bg-gray-300 px-4 py-2 rounded-md mr-2"
+            >
+              Previous
+            </button>
+            <button
+              onclick="nextPage()"
+              class="bg-gray-300 px-4 py-2 rounded-md"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </main>
-
-      
+      <div
+        id="productCardTemplate"
+        class="bg-white p-4 rounded-lg shadow-md"
+<!--        style="display: none"-->
+      >
+        <img
+          id="productImage"
+          alt="Product Image"
+          class="mb-4 w-full h-40 object-cover rounded-md"
+        />
+        <div>
+          <h3 id="productName" class="text-xl font-semibold mb-2"></h3>
+          <p id="productDescription" class="text-gray-600 mb-2"></p>
+          <p id="productPrice" class="text-indigo-700 font-bold mb-2"></p>
+        </div>
+        <button
+          class="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+        >
+          Add to Cart
+        </button>
+      </div>
     </div>
+
+    <script>
+      const itemsPerPage = 9;
+      let currentPage = 1;
+      let products = [];
+
+      async function fetchProducts() {
+
+        try {
+          // Assuming you have an endpoint to fetch products from your Spring Boot API
+          const response = await fetch("http://localhost:8080/api/products");
+          products = await response.json();
+          console.log("Fetched products:", products); // Log fetched products
+          return products;
+        } catch (error) {
+          console.error("Error fetching products:", error);
+          return [];
+        }
+      }
+
+      async function renderProducts() {
+        const productList = document.getElementById("productList");
+        productList.innerHTML = "";
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        console.log('Number of products:', products.length);
+
+        for (let i = startIndex; i < endIndex && i < products.Size; i++) {
+
+          const product = products.Data[i];
+          console.log("Render product",product);
+          const productCardClone = document
+            .getElementById("productCardTemplate")
+            .cloneNode(true);
+
+          // Populate product card
+          productCardClone.style.display = "block";
+          productCardClone.querySelector("#productImage").src = product.photos;
+          productCardClone.querySelector("#productName").textContent =
+            product.title;
+          productCardClone.querySelector("#productDescription").textContent =
+            Object.entries(product.attributes);
+          productCardClone.querySelector(
+            "#productPrice"
+          ).textContent = `$${product.price.toFixed(2)}`;
+
+          productList.appendChild(productCardClone);
+        }
+      }
+
+      function nextPage() {
+        currentPage++;
+        renderProducts();
+      }
+
+      function prevPage() {
+        if (currentPage > 1) {
+          currentPage--;
+          renderProducts();
+        }
+      }
+
+      // Initial rendering
+      fetchProducts().then(renderProducts);
+    </script>
   </body>
 </html>
