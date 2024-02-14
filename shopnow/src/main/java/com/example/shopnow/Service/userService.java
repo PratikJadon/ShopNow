@@ -55,4 +55,6 @@ public class userService {
     public boolean isUsernameExist(String username) {
         return userRepo.findByUsername(username) != null;
     }
+
+
 }

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>ShopNow</title>
+  </head>
+  <body
+    class="h-screen bg-gradient-to-tl from-green-400 to-indigo-900 w-full py-16 px-4 flex items-center justify-center"
+  >
+    <div class="bg-white p-8 rounded shadow-md w-96">
+      <h2 class="text-2xl font-semibold mb-4 text-center fa-align-center">
+        Login
+      </h2>
+      <div id="login-message"></div>
+
+      <form id="loginForm">
+        <div class="mb-4">
+          <label for="email" class="block text-sm font-medium text-gray-600"
+            >Email</label
+          >
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="mt-1 p-2 w-full border rounded-md"
+            required
+          />
+        </div>
+
+        <div class="mb-4">
+          <label for="password" class="block text-sm font-medium text-gray-600"
+            >Password</label
+          >
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="mt-1 p-2 w-full border rounded-md"
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          class="bg-blue-500 text-white p-2 rounded-md w-full"
+          onclick=""
+        >
+          Sign Up
+        </button>
+      </form>
+
+      <p class="mt-4 text-sm text-gray-600">
+        Dont't have an account yet?
+        <a href="SignUp.html" class="text-blue-500">Signup</a>
+      </p>
+    </div>
+
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+
+          var formData = {
+            email: email,
+            password: password,
+          };
+
+          fetch("http://localhost:8080/api/user/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                return response.json().then((errorData) => {
+                  // If response is not ok, handle the error
+                  document.getElementById(
+                    "login-message"
+                  ).innerHTML = `<p style='color: red;'>Error: ${errorData.Message}</p>`;
+                  throw new Error(errorData.Message);
+                });
+              }
+              return response.json();
+            })
+            .then((data) => {
+              // Clear form fields
+              document.getElementById("loginForm").reset();
+              // Display success message or perform any other actions
+              document.getElementById(
+                "login-message"
+              ).innerHTML = `<p style='color: green;'>${data.Message}</p>`;
+
+              const token = data.Token;
+              // Store the token in local storage
+              localStorage.setItem("token", token);
+              // Redirect to the dashboard page after a delay (e.g., 2 seconds)
+              setTimeout(function () {
+                window.location.href = "dashboard.html";
+              }, 2000);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              // Handle network errors or any other unexpected errors
+            });
+        });
+    </script>
+  </body>
+</html>
