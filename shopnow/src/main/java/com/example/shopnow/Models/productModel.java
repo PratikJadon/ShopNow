@@ -31,10 +31,4 @@ public class productModel {
     private String category;
     private String gender;
 
-//    public productModel(String username, String fullname, String email, String password) {
-//        this.fullname = fullname;
-//        this.password = password;
-//        this.username = username;
-//        this.email = email;
-//    }
 }

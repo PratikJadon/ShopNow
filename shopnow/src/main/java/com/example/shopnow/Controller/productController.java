@@ -5,6 +5,7 @@ import com.example.shopnow.Models.productModel;
 import com.example.shopnow.Models.userModel;
 import com.example.shopnow.Service.productService;
 import com.example.shopnow.Service.userService;
+import jakarta.servlet.Servlet;
 import jakarta.servlet.ServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -92,6 +94,40 @@ public class productController {
             put("Success",true);
             put("Message","Item removed from cart.");
         }});
+    }
+
+    @GetMapping("/getcart")
+    public ResponseEntity getCart(ServletRequest request){
+        String userid = request.getAttribute("user").toString();
+        Optional<userModel> user = userService.findById(userid);
+        List<cartModel> cart = user.get().getCart();
+
+        List<productModel> populatedCart = new ArrayList<>();
+        List<Integer> populatedCartQuantity = new ArrayList<>();
+
+        // Error handling: Ensure cart is not empty and handle potential failures
+        if (cart != null && !cart.isEmpty()) {
+            for (cartModel cartItem : cart) {
+                try {
+                    // Fetch product details using product ID
+                    Optional<productModel> product = prodService.findById(cartItem.getProductId());
+                    if (product.isEmpty()) {
+                        // Handle missing product (log, skip, or provide default values)
+                        System.out.println("Product with ID " + cartItem.getProductId() + " not found. Skipping...");
+                        continue;
+                    }
+                    populatedCart.add(product.get());
+                    populatedCartQuantity.add(cartItem.getQuantity());
+                } catch (Exception e) {
+                    // Handle other exceptions (network errors, invalid data, etc.)
+                    System.err.println("Error fetching product details for ID " + cartItem.getProductId() + ": " + e.getMessage());
+                }
+            }
+        }
+        return ResponseEntity.ok().body(new HashMap<String,Object>(){{
+            put("Products",populatedCart);
+            put("Quantity",populatedCartQuantity);
+        }}); // Return empty list with informative message
     }
 
 }

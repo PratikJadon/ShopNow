@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Slf4j
@@ -23,6 +24,10 @@ public class productService {
     private productRepository productRepo;
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    public Optional<productModel> findById(String prodid){
+        return productRepo.findById(prodid);
+    }
 
     public List<productModel> findProducts(String sortByPrice, String category, String searchKeyword, Pageable pageable) {
         Criteria criteria = new Criteria();

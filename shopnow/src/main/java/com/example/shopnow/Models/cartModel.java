@@ -20,8 +20,6 @@ import java.util.Map;
 @Setter
 public class cartModel {
 
-    @Id
-    private String id;
 
     @NotBlank(message = "Cart must have amount of products in it.")
     private int quantity;

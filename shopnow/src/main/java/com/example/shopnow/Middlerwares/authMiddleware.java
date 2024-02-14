@@ -33,25 +33,23 @@ public class authMiddleware implements Filter {
         httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
         httpResponse.setHeader("Access-Control-Max-Age", "3600");
 
+        if ("OPTIONS".equals(httpRequest.getMethod())) {
+            httpResponse.setStatus(HttpStatus.OK.value());
+            return; // Do not proceed with further processing for preflight requests
+        }
         // Check if the user is authenticated
         String user = isAuthenticated(httpRequest);
         if (user == null) {
             httpResponse.setContentType("application/json");
             httpResponse.setCharacterEncoding("UTF-8");
-            httpResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
-
-            Map<String, String> responseBody = new HashMap<>();
-            responseBody.put("error", "Unauthorized");
-            responseBody.put("message", "Authentication token is invalid");
-
-            httpResponse.getWriter().write(new ObjectMapper().writeValueAsString(responseBody));
-            return;
+            httpResponse.sendError(HttpStatus.UNAUTHORIZED.value(),"Token is not valid");
+        } else {
+            // If the user is authenticated, proceed with the request
+            log.info("Token validated successfully.");
+            request.setAttribute("user", user);
+            httpResponse.setStatus(HttpStatus.OK.value());
+            chain.doFilter(request,response);
         }
-
-        // If the user is authenticated, proceed with the request
-        log.info("Token validated successfully.");
-        request.setAttribute("user", user);
-        chain.doFilter(request, response);
     }
 
     private String extractToken(HttpServletRequest request) {
