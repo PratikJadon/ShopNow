@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
@@ -17,7 +18,7 @@
 
     <div x-data="{ cartOpen: false , isOpen: false }" class="bg-white">
       <header>
-        <div class="container mx-auto px-3 py-3">
+        <div class="container mx-auto">
           <div
             class="bg-gradient-to-tl from-green-400 to-indigo-900 flex flex-col"
           >
@@ -173,102 +174,7 @@
           </div>
           <span class="text-gray-600">20$</span>
         </div>
-        <div class="flex justify-between mt-6">
-          <div class="flex">
-            <img
-              class="h-20 w-20 object-cover rounded"
-              src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80"
-              alt=""
-            />
-            <div class="mx-3">
-              <h3 class="text-sm text-gray-600">Mac Book Pro</h3>
-              <div class="flex items-center mt-2">
-                <button
-                  class="text-gray-500 focus:outline-none focus:text-gray-600"
-                >
-                  <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                    ></path>
-                  </svg>
-                </button>
-                <span class="text-gray-700 mx-2">2</span>
-                <button
-                  class="text-gray-500 focus:outline-none focus:text-gray-600"
-                >
-                  <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-          <span class="text-gray-600">20$</span>
-        </div>
-        <div class="flex justify-between mt-6">
-          <div class="flex">
-            <img
-              class="h-20 w-20 object-cover rounded"
-              src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80"
-              alt=""
-            />
-            <div class="mx-3">
-              <h3 class="text-sm text-gray-600">Mac Book Pro</h3>
-              <div class="flex items-center mt-2">
-                <button
-                  class="text-gray-500 focus:outline-none focus:text-gray-600"
-                >
-                  <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                    ></path>
-                  </svg>
-                </button>
-                <span class="text-gray-700 mx-2">2</span>
-                <button
-                  class="text-gray-500 focus:outline-none focus:text-gray-600"
-                >
-                  <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-          <span class="text-gray-600">20$</span>
-        </div>
+
         <div class="mt-8">
           <form class="flex items-center justify-center">
             <input
@@ -352,17 +258,16 @@
 
       async function fetchProducts() {
         const token = await localStorage.getItem("token");
-        console.log(token);
         try {
           // Assuming you have an endpoint to fetch products from your Spring Boot API
           const response = await fetch("http://localhost:8080/api/products", {
+            method: "GET", // Method should be specified outside of the headers object
             headers: {
               Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
             },
           });
-          console.log(response);
           products = await response.json();
-          console.log("Fetched products:", products); // Log fetched products
           return products;
         } catch (error) {
           console.log("Error fetching products:", error);
@@ -371,6 +276,7 @@
       }
 
       async function renderProducts() {
+        await fetchProducts();
         const productList = document.getElementById("productList");
         productList.innerHTML = "";
 
@@ -378,7 +284,6 @@
         const endIndex = startIndex + itemsPerPage;
         for (let i = startIndex; i < endIndex && i < products.Size; i++) {
           const product = products.Data[i];
-          console.log("Render product", product);
 
           // Deep clone the product card template
           const productCardClone = document
@@ -394,7 +299,9 @@
           productCardClone.querySelector("#productName").textContent =
             product.title;
           productCardClone.querySelector("#productDescription").textContent =
-            Object.entries(product.attributes);
+            product.attributes != null
+              ? Object.entries(product.attributes)
+              : "";
           productCardClone.querySelector(
             "#productPrice"
           ).textContent = `$${product.price.toFixed(2)}`;
@@ -421,7 +328,7 @@
       }
 
       // Initial rendering
-      fetchProducts().then(renderProducts);
+      renderProducts();
     </script>
   </body>
 </html>
