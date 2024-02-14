@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@WebFilter(urlPatterns = "/api/products")
+@WebFilter(urlPatterns = "/api/products/*")
 public class authMiddleware implements Filter {
     @Autowired
     private jwtHelper jwtHelper;
@@ -27,7 +27,8 @@ public class authMiddleware implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         // Check if the user is authenticated
-        if (isAuthenticated(httpRequest) == null) {
+        String user = isAuthenticated(httpRequest);
+        if (user == null) {
             httpResponse.setContentType("application/json");
             httpResponse.setCharacterEncoding("UTF-8");
             httpResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -42,6 +43,7 @@ public class authMiddleware implements Filter {
 
         // If the user is authenticated, proceed with the request
         log.info("Token validated successfully.");
+        request.setAttribute("user", user);
         chain.doFilter(request, response);
     }
 

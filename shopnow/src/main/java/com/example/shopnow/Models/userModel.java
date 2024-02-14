@@ -8,6 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Document(collection = "user")
 @Slf4j
 @Getter
@@ -30,10 +33,13 @@ public class userModel {
     @NotBlank(message = "Username cannot be blank.")
     private String username;
 
+    private List<cartModel> cart;
+
     public userModel(String username, String fullname, String email, String password) {
         this.fullname = fullname;
         this.password = password;
         this.username = username;
         this.email = email;
+        this.cart = new ArrayList<>();
     }
 }

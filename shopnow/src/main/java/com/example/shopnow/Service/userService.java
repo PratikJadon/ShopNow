@@ -8,6 +8,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 
 
 @Slf4j
@@ -18,6 +19,14 @@ public class userService {
 
     @Autowired
     private jwtHelper jwtHelper;
+
+    public Optional<userModel> findById(String id){
+        return userRepo.findById(id);
+    }
+
+    public void updateUser(userModel user){
+        userRepo.save(user);
+    }
 
     public userModel loginAuthPass(userModel user) {
         if(BCrypt.checkpw(user.getPassword(), userRepo.findByEmail(user.getEmail()).getPassword())){
