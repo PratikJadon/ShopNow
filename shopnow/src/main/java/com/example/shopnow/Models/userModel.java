@@ -2,6 +2,7 @@ package com.example.shopnow.Models;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ public class userModel {
     private String password;
 
     @Email(message = "Please provide correct email.")
+    @Pattern(regexp = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$", message = "Please provide correct email.")
     @NotBlank(message = "Email cannot be blank.")
     private String email;
 

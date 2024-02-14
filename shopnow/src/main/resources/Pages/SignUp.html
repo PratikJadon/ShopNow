@@ -6,114 +6,206 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>ShopNow</title>
   </head>
-  <body class="h-screen bg-gradient-to-tl from-green-400 to-indigo-900 w-full py-16 px-4 flex items-center justify-center">
-
+  <body
+    class="h-screen bg-gradient-to-tl from-green-400 to-indigo-900 w-full py-16 px-4 flex items-center justify-center"
+  >
     <div class="bg-white p-8 rounded shadow-md w-96">
-        <h2 class="text-2xl font-semibold mb-4 text-center fa-align-center">Sign Up</h2>
-        <div id="signup-message"></div>
+      <h2 class="text-2xl font-semibold mb-4 text-center fa-align-center">
+        Sign Up
+      </h2>
+      <div id="signup-message"></div>
 
-        <form id ="signup-form">
-           <div class="mb-4">
-                <label for="fullname" class="block text-sm font-medium text-gray-600">Full Name</label>
-                <input type="text" id="fullname" name="fullname" class="mt-1 p-2 w-full border rounded-md" required>
-            </div>
-            <div class="mb-4">
-                <label for="username" class="block text-sm font-medium text-gray-600">Username</label>
-                <input type="text" id="username" name="username" class="mt-1 p-2 w-full border rounded-md" required>
-            </div>
+      <form id="signup-form">
+        <div class="mb-4">
+          <label for="fullname" class="block text-sm font-medium text-gray-600"
+            >Full Name</label
+          >
+          <input
+            type="text"
+            id="fullname"
+            name="fullname"
+            class="mt-1 p-2 w-full border rounded-md"
+            required
+          />
+          <span
+            class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+            id="errorfullname"
+            hidden
+          >
+          </span>
+        </div>
+        <div class="mb-4">
+          <label for="username" class="block text-sm font-medium text-gray-600"
+            >Username</label
+          >
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="mt-1 p-2 w-full border rounded-md"
+            required
+          />
+        </div>
+        <div class="mb-4">
+          <label for="email" class="block text-sm font-medium text-gray-600"
+            >Email</label
+          >
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="mt-1 p-2 w-full border rounded-md"
+            required
+          />
+          <span
+            class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+            id="erroremail"
+          >
+          </span>
+        </div>
+        <div class="mb-4">
+          <label for="password" class="block text-sm font-medium text-gray-600"
+            >Password</label
+          >
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="mt-1 p-2 w-full border rounded-md"
+            required
+          />
+          <span
+            class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+            id="errorpassword"
+            hidden
+          >
+          </span>
+        </div>
+        <div class="mb-4">
+          <label
+            for="confirmPassword"
+            class="block text-sm font-medium text-gray-600"
+            >Confirm Password</label
+          >
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            class="mt-1 p-2 w-full border rounded-md"
+            required
+          />
+          <span
+            class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+            id="errorconfirmPassword"
+            hidden
+          >
+          </span>
+        </div>
+        <button
+          type="submit"
+          class="bg-blue-500 text-white p-2 rounded-md w-full"
+          onclick=""
+        >
+          Sign Up
+        </button>
+      </form>
 
-            <div class="mb-4">
-                <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
-                <input type="email" id="email" name="email" class="mt-1 p-2 w-full border rounded-md" required>
-            </div>
-
-            <div class="mb-4">
-                <label for="password" class="block text-sm font-medium text-gray-600">Password</label>
-                <input type="password" id="password" name="password" class="mt-1 p-2 w-full border rounded-md" required>
-            </div>
-
-            <div class="mb-4">
-                <label for="confirmPassword" class="block text-sm font-medium text-gray-600">Confirm Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" class="mt-1 p-2 w-full border rounded-md" required>
-            </div>
-
-            <button type="submit" class="bg-blue-500 text-white p-2 rounded-md w-full" onclick="">Sign Up</button>
-        </form>
-
-        <p class="mt-4 text-sm text-gray-600">Already have an account? <a href="login.html" class="text-blue-500">Log in</a></p>
+      <p class="mt-4 text-sm text-gray-600">
+        Already have an account?
+        <a href="login.html" class="text-blue-500">Log in</a>
+      </p>
     </div>
-
-</body>
-    <script>
-      // script.js
-      document
-        .getElementById("signup-form")
-        .addEventListener("submit", async function (event) {
-          event.preventDefault();
-          // Get form values
-          var fullname = document.getElementById("fullname").value;
-          var email = document.getElementById("email").value;
-          var username = document.getElementById("username").value;
-          var password = document.getElementById("password").value;
-          var regexUpperCase = /[A-Z]/; // Match uppercase letters
-          var regexLowerCase = /[a-z]/; // Match lowercase letters
-          var regexNumeric = /[0-9]/; // Match numeric digits
-          if (!regexUpperCase.test(password)) {
-            alert("Password must contain at least one uppercase letter.");
-            return; // Exit the function to prevent further execution
-          }
-          if (!regexLowerCase.test(password)) {
-            alert("Password must contain at least one lowercase letter.");
-            return; // Exit the function to prevent further execution
-          }
-          if (!regexNumeric.test(password)) {
-            alert("Password must contain at least one numeric digit.");
-            return; // Exit the function to prevent further execution
-          }
-          var confirmPassword =
-            document.getElementById("confirmPassword").value;
-          // Check if passwords match
-          if (password !== confirmPassword) {
-            alert("Passwords do not match");
-            return;
-          }
-          var formData = {
-            fullname: fullname,
-            email: email,
-            username: username,
-            password: password,
-          };
-          try {
-            // Send data to backend
-            const response = await fetch(
-              "http://localhost:8080/api/user/signup",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-              }
-            );
-
-            const errorData = await response.json();
-            if (!response.redirected) {
-              // Clear form fields
-              document.getElementById("signup-form").reset();
-              // If response is not ok, handle the error
-
-              document.getElementById(
-                "signup-message"
-              ).innerHTML = `<p style='color: red;'>Error: ${errorData.Message}</p>`;
-            } else {
-              setTimeout(function () {
-                window.location.href = "login.html";
-              }, 2000);
-            }
-          } catch (error) {
-            console.log("Some error occurred.");
-          }
-        });
-    </script>
   </body>
+  <script>
+    var isFormValid = true;
+    function addValidtionError(field, message) {
+      var span = document.getElementById("error" + field);
+      span.innerHTML = message;
+      span.hidden = false;
+      isFormValid = false;
+      console.log(field, span);
+      var input = document.getElementById(field);
+      input.addEventListener("click", (e) => {
+        span.innerHTML = "";
+      });
+    }
+
+    // script.js
+    document
+      .getElementById("signup-form")
+      .addEventListener("submit", async function (event) {
+        event.preventDefault();
+        // Get form values
+        var fullname = document.getElementById("fullname").value;
+        var email = document.getElementById("email").value;
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var regexUpperCase = /[A-Z]/; // Match uppercase letters
+        var regexLowerCase = /[a-z]/; // Match lowercase letters
+        var regexNumeric = /[0-9]/; // Match numeric digits
+        var regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!regexEmail.test(email)) {
+          addValidtionError("email", "Please provide a correct email.");
+        }
+        if (!regexUpperCase.test(password)) {
+          addValidtionError(
+            "password",
+            "Password must contain at least one uppercase letter."
+          );
+        } else if (!regexLowerCase.test(password)) {
+          addValidtionError(
+            "password",
+            "Password must contain at least one lowercase letter."
+          );
+        } else if (!regexNumeric.test(password)) {
+          addValidtionError(
+            "password",
+            "Password must contain at least one numeric digit."
+          );
+        }
+
+        var confirmPassword = document.getElementById("confirmPassword").value;
+        // Check if passwords match
+        if (password !== confirmPassword) {
+          addValidtionError("confirmPassword", "Passwords do not match");
+        }
+        if (!isFormValid) return;
+        var formData = {
+          fullname: fullname,
+          email: email,
+          username: username,
+          password: password,
+        };
+        try {
+          // Send data to backend
+          const response = await fetch(
+            "http://localhost:8080/api/user/signup",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(formData),
+            }
+          );
+
+          const data = await response.json();
+
+          document.getElementById(
+            "signup-message"
+          ).innerHTML = `<p style='color: ${
+            data.Success ? "green" : "red"
+          };'>INFO: ${data.Message}</p>`;
+
+          if (data.Success == false) return;
+
+          setTimeout(function () {
+            window.location.href = "login.html";
+          }, 2000);
+        } catch (error) {
+          console.log("Some error occurred.");
+        }
+      });
+  </script>
 </html>

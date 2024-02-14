@@ -34,10 +34,11 @@ public class productService {
         if (searchKeyword != null) {
             criteria.and("title").regex(searchKeyword, "i"); // Case-insensitive search
         }
+
         matchOps = Aggregation.match(criteria);
-        SortOperation sortOperation = null;
-        if (sortByPrice != null && (sortByPrice.equals("asc") || sortByPrice.equals("desc"))) {
-            sortOperation = Aggregation.sort(Sort.by(sortByPrice.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, "price"));
+        SortOperation sortOperation = Aggregation.sort(Sort.Direction.ASC,"price");
+        if (sortByPrice != null &&  sortByPrice.equals("desc")) {
+            sortOperation = Aggregation.sort( Sort.Direction.DESC, "price");
         }
         Aggregation aggregation = Aggregation.newAggregation(matchOps, sortOperation,
                 Aggregation.skip((long) pageable.getPageNumber() * pageable.getPageSize()),
