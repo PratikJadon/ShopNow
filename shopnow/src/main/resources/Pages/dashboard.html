@@ -1,69 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
-  </head>
-  <body class="h-screen">
-    <script
-      src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js"
-      defer
-    ></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <link
+          href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+          rel="stylesheet"
+  />
+</head>
+<body class="h-screen">
+<script
+        src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js"
+        defer
+></script>
 
-    <div x-data="{ cartOpen: false , isOpen: false }" class="bg-white">
-      <header>
-        <div class="container mx-auto px-3 py-3">
-          <div
-            class="bg-gradient-to-tl from-green-400 to-indigo-900 flex flex-col"
-          >
-            <div
-              class="flex items-center justify-between bg-gradient-to-tl from-green-400 to-indigo-900"
+<div x-data="{ cartOpen: false , isOpen: false }" class="bg-white">
+  <header>
+    <div class="container mx-auto px-3 py-3">
+      <div
+              class="bg-gradient-to-tl from-green-400 to-indigo-900 flex flex-col"
+      >
+        <div
+                class="flex items-center justify-between bg-gradient-to-tl from-green-400 to-indigo-900"
+        >
+          <div class="hidden w-full text-gray-600 md:flex md:items-center">
+            <nav
+                    :class="isOpen ? '' : 'hidden'"
+                    class="sm:flex sm:justify-center sm:items-center mt-4"
             >
-              <div class="hidden w-full text-gray-600 md:flex md:items-center">
-                <nav
-                  :class="isOpen ? '' : 'hidden'"
-                  class="sm:flex sm:justify-center sm:items-center mt-4"
+              <div
+                      class="w-full whitespace-nowrap text-white md:text-left text-2xl font-semibold mr-5 ml-5 mb-2"
+              >
+                Shop Now
+              </div>
+              <div class="flex flex-col sm:flex-row">
+                <a
+                        class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
+                        href="dashboard.html"
+                >Home</a
                 >
-                  <div
-                    class="w-full whitespace-nowrap text-white md:text-left text-2xl font-semibold mr-5 ml-5 mb-2"
-                  >
-                    Shop Now
-                  </div>
-                  <div class="flex flex-col sm:flex-row">
-                    <a
-                      class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
-                      href="dashboard.html"
-                      >Home</a
-                    >
 
-                    <a
-                      class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
-                      href="#"
-                      >Men</a
-                    >
-                    <a
-                      class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
-                      href="#"
-                      >Women</a
-                    >
-                    <a
-                      class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
-                      href="#"
-                      >Shop</a
-                    >
-                  </div>
-                </nav>
-                <div class="flex items-center justify-end w-full mr-10">
-                  <button
-                    @click="cartOpen = !cartOpen"
-                    class="text-white focus:outline-none mx-4 sm:mx-0"
-                  >
-                    <svg
+                <a
+                        class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
+                        href="#"
+                >Men</a
+                >
+                <a
+                        class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
+                        href="#"
+                >Women</a
+                >
+                <a
+                        class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
+                        href="#"
+                >Shop</a
+                >
+              </div>
+            </nav>
+            <div class="flex items-center justify-end w-full mr-10">
+              <button
+                      @click="cartOpen = !cartOpen"
+                      class="text-white focus:outline-none mx-4 sm:mx-0"
+              >
+                <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                >
+                  <path
+                          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                  ></path>
+                </svg>
+              </button>
+              <button class="text-white mx-5">
+                <a href="login.html"><b>Logout</b></a>
+              </button>
+              <div class="flex sm:hidden">
+                <button
+                        @click="isOpen = !isOpen"
+                        type="button"
+                        class="text-gray-600 hover:text-gray-500 focus:outline-none focus:text-gray-500"
+                        aria-label="toggle menu"
+                >
+                  <svg viewBox="0 0 24 24" class="h-6 w-6 fill-current">
+                    <path
+                            fill-rule="evenodd"
+                            d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div
+          :class="cartOpen ? 'translate-x-0 ease-out' : 'translate-x-full ease-in'"
+          class="fixed right-0 top-0 max-w-xs w-full h-full px-6 py-4 transition duration-300 transform overflow-y-auto bg-white border-l-2 border-gray-300"
+  >
+    <div class="flex items-center justify-between">
+      <h3 class="text-2xl font-medium text-gray-700">Your cart</h3>
+      <button
+              @click="cartOpen = !cartOpen"
+              class="text-gray-600 focus:outline-none"
+      >
+        <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+        >
+          <path d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <hr class="my-3" />
+    <div class="flex justify-between mt-6">
+      <div class="flex">
+        <img
+                class="h-20 w-20 object-cover rounded"
+                src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80"
+                alt=""
+        />
+        <div class="mx-3">
+          <h3 class="text-sm text-gray-600">Mac Book Pro</h3>
+          <div class="flex items-center mt-2">
+            <button
+                    class="text-gray-500 focus:outline-none focus:text-gray-600"
+            >
+              <svg
                       class="h-5 w-5"
                       fill="none"
                       stroke-linecap="round"
@@ -71,348 +146,279 @@
                       stroke-width="2"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
-                    >
-                      <path
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                      ></path>
-                    </svg>
-                  </button>
-                  <button class="text-white mx-5">
-                    <a href="login.html"><b>Logout</b></a>
-                  </button>
-                  <div class="flex sm:hidden">
-                    <button
-                      @click="isOpen = !isOpen"
-                      type="button"
-                      class="text-gray-600 hover:text-gray-500 focus:outline-none focus:text-gray-500"
-                      aria-label="toggle menu"
-                    >
-                      <svg viewBox="0 0 24 24" class="h-6 w-6 fill-current">
-                        <path
-                          fill-rule="evenodd"
-                          d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
-                        ></path>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+              >
+                <path
+                        d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+            </button>
+            <span class="text-gray-700 mx-2">2</span>
+            <button
+                    class="text-gray-500 focus:outline-none focus:text-gray-600"
+            >
+              <svg
+                      class="h-5 w-5"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+              >
+                <path d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </button>
           </div>
         </div>
-      </header>
-      <div
-        :class="cartOpen ? 'translate-x-0 ease-out' : 'translate-x-full ease-in'"
-        class="fixed right-0 top-0 max-w-xs w-full h-full px-6 py-4 transition duration-300 transform overflow-y-auto bg-white border-l-2 border-gray-300"
-      >
-        <div class="flex items-center justify-between">
-          <h3 class="text-2xl font-medium text-gray-700">Your cart</h3>
-          <button
-            @click="cartOpen = !cartOpen"
-            class="text-gray-600 focus:outline-none"
-          >
-            <svg
-              class="h-5 w-5"
+      </div>
+      <span class="text-gray-600">20$</span>
+    </div>
+    <div class="flex justify-between mt-6">
+      <div class="flex">
+        <img
+                class="h-20 w-20 object-cover rounded"
+                src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80"
+                alt=""
+        />
+        <div class="mx-3">
+          <h3 class="text-sm text-gray-600">Mac Book Pro</h3>
+          <div class="flex items-center mt-2">
+            <button
+                    class="text-gray-500 focus:outline-none focus:text-gray-600"
+            >
+              <svg
+                      class="h-5 w-5"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+              >
+                <path
+                        d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+            </button>
+            <span class="text-gray-700 mx-2">2</span>
+            <button
+                    class="text-gray-500 focus:outline-none focus:text-gray-600"
+            >
+              <svg
+                      class="h-5 w-5"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+              >
+                <path d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <span class="text-gray-600">20$</span>
+    </div>
+    <div class="flex justify-between mt-6">
+      <div class="flex">
+        <img
+                class="h-20 w-20 object-cover rounded"
+                src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80"
+                alt=""
+        />
+        <div class="mx-3">
+          <h3 class="text-sm text-gray-600">Mac Book Pro</h3>
+          <div class="flex items-center mt-2">
+            <button
+                    class="text-gray-500 focus:outline-none focus:text-gray-600"
+            >
+              <svg
+                      class="h-5 w-5"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+              >
+                <path
+                        d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+            </button>
+            <span class="text-gray-700 mx-2">2</span>
+            <button
+                    class="text-gray-500 focus:outline-none focus:text-gray-600"
+            >
+              <svg
+                      class="h-5 w-5"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+              >
+                <path d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <span class="text-gray-600">20$</span>
+    </div>
+    <div class="mt-8">
+      <form class="flex items-center justify-center">
+        <input
+                class="form-input w-48"
+                type="text"
+                placeholder="Add promocode"
+        />
+        <button
+                class="ml-3 flex items-center px-3 py-2 bg-blue-600 text-white text-sm uppercase font-medium rounded hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
+        >
+          <span>Apply</span>
+        </button>
+      </form>
+    </div>
+    <a
+            class="flex items-center justify-center mt-4 px-3 py-2 bg-blue-600 text-white text-sm uppercase font-medium rounded hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
+    >
+      <span>Chechout</span>
+      <svg
+              class="h-5 w-5 mx-2"
               fill="none"
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
               viewBox="0 0 24 24"
               stroke="currentColor"
-            >
-              <path d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </button>
-        </div>
-        <hr class="my-3" />
-        <div class="flex justify-between mt-6">
-          <div class="flex">
-            <img
-              class="h-20 w-20 object-cover rounded"
-              src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80"
-              alt=""
-            />
-            <div class="mx-3">
-              <h3 class="text-sm text-gray-600">Mac Book Pro</h3>
-              <div class="flex items-center mt-2">
-                <button
-                  class="text-gray-500 focus:outline-none focus:text-gray-600"
-                >
-                  <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                    ></path>
-                  </svg>
-                </button>
-                <span class="text-gray-700 mx-2">2</span>
-                <button
-                  class="text-gray-500 focus:outline-none focus:text-gray-600"
-                >
-                  <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-          <span class="text-gray-600">20$</span>
-        </div>
-        <div class="flex justify-between mt-6">
-          <div class="flex">
-            <img
-              class="h-20 w-20 object-cover rounded"
-              src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80"
-              alt=""
-            />
-            <div class="mx-3">
-              <h3 class="text-sm text-gray-600">Mac Book Pro</h3>
-              <div class="flex items-center mt-2">
-                <button
-                  class="text-gray-500 focus:outline-none focus:text-gray-600"
-                >
-                  <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                    ></path>
-                  </svg>
-                </button>
-                <span class="text-gray-700 mx-2">2</span>
-                <button
-                  class="text-gray-500 focus:outline-none focus:text-gray-600"
-                >
-                  <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-          <span class="text-gray-600">20$</span>
-        </div>
-        <div class="flex justify-between mt-6">
-          <div class="flex">
-            <img
-              class="h-20 w-20 object-cover rounded"
-              src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80"
-              alt=""
-            />
-            <div class="mx-3">
-              <h3 class="text-sm text-gray-600">Mac Book Pro</h3>
-              <div class="flex items-center mt-2">
-                <button
-                  class="text-gray-500 focus:outline-none focus:text-gray-600"
-                >
-                  <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                    ></path>
-                  </svg>
-                </button>
-                <span class="text-gray-700 mx-2">2</span>
-                <button
-                  class="text-gray-500 focus:outline-none focus:text-gray-600"
-                >
-                  <svg
-                    class="h-5 w-5"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-          <span class="text-gray-600">20$</span>
-        </div>
-        <div class="mt-8">
-          <form class="flex items-center justify-center">
-            <input
-              class="form-input w-48"
-              type="text"
-              placeholder="Add promocode"
-            />
-            <button
-              class="ml-3 flex items-center px-3 py-2 bg-blue-600 text-white text-sm uppercase font-medium rounded hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
-            >
-              <span>Apply</span>
-            </button>
-          </form>
-        </div>
-        <a
-          class="flex items-center justify-center mt-4 px-3 py-2 bg-blue-600 text-white text-sm uppercase font-medium rounded hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
-        >
-          <span>Chechout</span>
-          <svg
-            class="h-5 w-5 mx-2"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-          </svg>
-        </a>
-      </div>
-      <main class="my-8">
-        <div class="container mx-auto px-6">
-          <div
-            id="productList"
-            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-8"
-          >
-            <!-- Products will be dynamically added here -->
-          </div>
-
-          <!-- Pagination -->
-          <div id="pagination" class="mt-8">
-            <button
-              onclick="prevPage()"
-              class="bg-gray-300 px-4 py-2 rounded-md mr-2"
-            >
-              Previous
-            </button>
-            <button
-              onclick="nextPage()"
-              class="bg-gray-300 px-4 py-2 rounded-md"
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      </main>
-      <div
-        id="productCardTemplate"
-        class="bg-white p-4 rounded-lg shadow-md"
-<!--        style="display: none"-->
       >
-        <img
-          id="productImage"
-          alt="Product Image"
-          class="mb-4 w-full h-40 object-cover rounded-md"
-        />
-        <div>
-          <h3 id="productName" class="text-xl font-semibold mb-2"></h3>
-          <p id="productDescription" class="text-gray-600 mb-2"></p>
-          <p id="productPrice" class="text-indigo-700 font-bold mb-2"></p>
-        </div>
+        <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+      </svg>
+    </a>
+  </div>
+  <main class="my-8">
+    <div class="container mx-auto px-6">
+      <div
+              id="productList"
+              class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-8"
+      >
+        <!-- Products will be dynamically added here -->
+      </div>
+
+      <!-- Pagination -->
+      <div id="pagination" class="mt-8">
         <button
-          class="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+                onclick="prevPage()"
+                class="bg-gray-300 px-4 py-2 rounded-md mr-2"
         >
-          Add to Cart
+          Previous
+        </button>
+        <button
+                onclick="nextPage()"
+                class="bg-gray-300 px-4 py-2 rounded-md"
+        >
+          Next
         </button>
       </div>
     </div>
+  </main>
+  <div
+          id="productCardTemplate"
+          class="bg-white p-4 rounded-lg shadow-md">
+  <img
+          id="productImage"
+          alt="Product Image"
+          class="mb-4 w-full h-40 object-cover rounded-md"
+  />
+  <div>
+    <h3 id="productName" class="text-xl font-semibold mb-2"></h3>
+    <p id="productDescription" class="text-gray-600 mb-2"></p>
+    <p id="productPrice" class="text-indigo-700 font-bold mb-2"></p>
+  </div>
+  <button
+          class="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+  >
+    Add to Cart
+  </button>
+</div>
+</div>
 
-    <script>
-      const itemsPerPage = 9;
-      let currentPage = 1;
-      let products = [];
+<script>
+  const itemsPerPage = 9;
+  let currentPage = 1;
+  let products = [];
 
-      async function fetchProducts() {
+  async function fetchProducts() {
 
-        try {
-          // Assuming you have an endpoint to fetch products from your Spring Boot API
-          const response = await fetch("http://localhost:8080/api/products");
-          products = await response.json();
-          console.log("Fetched products:", products); // Log fetched products
-          return products;
-        } catch (error) {
-          console.error("Error fetching products:", error);
-          return [];
-        }
-      }
+    try {
+      // Assuming you have an endpoint to fetch products from your Spring Boot API
+      const response = await fetch("http://localhost:8080/api/products");
+      products = await response.json();
+      console.log("Fetched products:", products); // Log fetched products
+      return products;
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      return [];
+    }
+  }
 
-      async function renderProducts() {
-        const productList = document.getElementById("productList");
-        productList.innerHTML = "";
+  async function renderProducts() {
+  const productList = document.getElementById("productList");
+  productList.innerHTML = "";
 
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        console.log('Number of products:', products.length);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  for (let i = startIndex; i < endIndex && i < products.Size; i++) {
+    const product = products.Data[i];
+    console.log("Render product", product);
 
-        for (let i = startIndex; i < endIndex && i < products.Size; i++) {
+    // Deep clone the product card template
+    const productCardClone = document
+      .getElementById("productCardTemplate")
+      .cloneNode(true);
 
-          const product = products.Data[i];
-          console.log("Render product",product);
-          const productCardClone = document
-            .getElementById("productCardTemplate")
-            .cloneNode(true);
+    // Set a new id for the cloned template to avoid conflicts
+    productCardClone.id = `productCardClone${i}`;
 
-          // Populate product card
-          productCardClone.style.display = "block";
-          productCardClone.querySelector("#productImage").src = product.photos;
-          productCardClone.querySelector("#productName").textContent =
-            product.title;
-          productCardClone.querySelector("#productDescription").textContent =
-            Object.entries(product.attributes);
-          productCardClone.querySelector(
-            "#productPrice"
-          ).textContent = `$${product.price.toFixed(2)}`;
+    // Populate product card
+    productCardClone.style.display = "block";
+    productCardClone.querySelector("#productImage").src = product.photos;
+    productCardClone.querySelector("#productName").textContent =
+      product.title;
+    productCardClone.querySelector("#productDescription").textContent =
+      Object.entries(product.attributes);
+    productCardClone.querySelector(
+      "#productPrice"
+    ).textContent = `$${product.price.toFixed(2)}`;
 
-          productList.appendChild(productCardClone);
-        }
-      }
+    // Append the cloned template to the container
+    productList.appendChild(productCardClone);
+  }
 
-      function nextPage() {
-        currentPage++;
-        renderProducts();
-      }
+  // Remove the original template from the DOM
+  const originalTemplate = document.getElementById("productCardTemplate");
+  originalTemplate.parentNode.removeChild(originalTemplate);
+}
 
-      function prevPage() {
-        if (currentPage > 1) {
-          currentPage--;
-          renderProducts();
-        }
-      }
 
-      // Initial rendering
-      fetchProducts().then(renderProducts);
-    </script>
-  </body>
+  function nextPage() {
+    currentPage++;
+    renderProducts();
+  }
+
+  function prevPage() {
+    if (currentPage > 1) {
+      currentPage--;
+      renderProducts();
+    }
+  }
+
+  // Initial rendering
+  fetchProducts().then(renderProducts);
+</script>
+</body>
 </html>
