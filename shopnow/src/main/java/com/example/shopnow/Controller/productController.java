@@ -5,7 +5,6 @@ import com.example.shopnow.Models.productModel;
 import com.example.shopnow.Models.userModel;
 import com.example.shopnow.Service.productService;
 import com.example.shopnow.Service.userService;
-import jakarta.servlet.Servlet;
 import jakarta.servlet.ServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

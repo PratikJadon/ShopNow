@@ -46,7 +46,7 @@
           class="bg-blue-500 text-white p-2 rounded-md w-full"
           onclick=""
         >
-          Sign Up
+          Login
         </button>
       </form>
 
@@ -101,8 +101,8 @@
               localStorage.setItem("token", token);
               // Redirect to the dashboard page after a delay (e.g., 2 seconds)
               setTimeout(function () {
-                window.location.href = "dashboard.html";
-              }, 2000);
+                window.location.replace("dashboard.html");
+              }, 1500);
             })
             .catch((error) => {
               console.error("Error:", error);

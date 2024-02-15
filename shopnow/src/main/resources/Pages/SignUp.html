@@ -15,100 +15,97 @@
       </h2>
       <div id="signup-message"></div>
 
-      <form id="signup-form">
-        <div class="mb-4">
-          <label for="fullname" class="block text-sm font-medium text-gray-600"
-            >Full Name</label
-          >
-          <input
-            type="text"
-            id="fullname"
-            name="fullname"
-            class="mt-1 p-2 w-full border rounded-md"
-            required
-          />
-          <span
-            class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
-            id="errorfullname"
-            hidden
-          >
-          </span>
-        </div>
-        <div class="mb-4">
-          <label for="username" class="block text-sm font-medium text-gray-600"
-            >Username</label
-          >
-          <input
-            type="text"
-            id="username"
-            name="username"
-            class="mt-1 p-2 w-full border rounded-md"
-            required
-          />
-        </div>
-        <div class="mb-4">
-          <label for="email" class="block text-sm font-medium text-gray-600"
-            >Email</label
-          >
-          <input
-            type="email"
-            id="email"
-            name="email"
-            class="mt-1 p-2 w-full border rounded-md"
-            required
-          />
-          <span
-            class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
-            id="erroremail"
-          >
-          </span>
-        </div>
-        <div class="mb-4">
-          <label for="password" class="block text-sm font-medium text-gray-600"
-            >Password</label
-          >
-          <input
-            type="password"
-            id="password"
-            name="password"
-            class="mt-1 p-2 w-full border rounded-md"
-            required
-          />
-          <span
-            class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
-            id="errorpassword"
-            hidden
-          >
-          </span>
-        </div>
-        <div class="mb-4">
-          <label
-            for="confirmPassword"
-            class="block text-sm font-medium text-gray-600"
-            >Confirm Password</label
-          >
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            class="mt-1 p-2 w-full border rounded-md"
-            required
-          />
-          <span
-            class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
-            id="errorconfirmPassword"
-            hidden
-          >
-          </span>
-        </div>
-        <button
-          type="submit"
-          class="bg-blue-500 text-white p-2 rounded-md w-full"
-          onclick=""
+      <div class="mb-4">
+        <label for="fullname" class="block text-sm font-medium text-gray-600"
+          >Full Name</label
         >
-          Sign Up
-        </button>
-      </form>
+        <input
+          type="text"
+          id="fullname"
+          name="fullname"
+          class="mt-1 p-2 w-full border rounded-md"
+          required
+        />
+        <span
+          class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+          id="errorfullname"
+          hidden
+        >
+        </span>
+      </div>
+      <div class="mb-4">
+        <label for="username" class="block text-sm font-medium text-gray-600"
+          >Username</label
+        >
+        <input
+          type="text"
+          id="username"
+          name="username"
+          class="mt-1 p-2 w-full border rounded-md"
+          required
+        />
+      </div>
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-gray-600"
+          >Email</label
+        >
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="mt-1 p-2 w-full border rounded-md"
+          required
+        />
+        <span
+          class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+          id="erroremail"
+        >
+        </span>
+      </div>
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-medium text-gray-600"
+          >Password</label
+        >
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="mt-1 p-2 w-full border rounded-md"
+          required
+        />
+        <span
+          class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+          id="errorpassword"
+          hidden
+        >
+        </span>
+      </div>
+      <div class="mb-4">
+        <label
+          for="confirmPassword"
+          class="block text-sm font-medium text-gray-600"
+          >Confirm Password</label
+        >
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          class="mt-1 p-2 w-full border rounded-md"
+          required
+        />
+        <span
+          class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+          id="errorconfirmPassword"
+          hidden
+        >
+        </span>
+      </div>
+      <button
+        onclick="submit()"
+        class="bg-blue-500 text-white p-2 rounded-md w-full"
+      >
+        Sign Up
+      </button>
 
       <p class="mt-4 text-sm text-gray-600">
         Already have an account?
@@ -131,81 +128,80 @@
     }
 
     // script.js
-    document
-      .getElementById("signup-form")
-      .addEventListener("submit", async function (event) {
-        event.preventDefault();
-        // Get form values
-        var fullname = document.getElementById("fullname").value;
-        var email = document.getElementById("email").value;
-        var username = document.getElementById("username").value;
-        var password = document.getElementById("password").value;
-        var regexUpperCase = /[A-Z]/; // Match uppercase letters
-        var regexLowerCase = /[a-z]/; // Match lowercase letters
-        var regexNumeric = /[0-9]/; // Match numeric digits
-        var regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (!regexEmail.test(email)) {
-          addValidtionError("email", "Please provide a correct email.");
-        }
-        if (!regexUpperCase.test(password)) {
-          addValidtionError(
-            "password",
-            "Password must contain at least one uppercase letter."
-          );
-        } else if (!regexLowerCase.test(password)) {
-          addValidtionError(
-            "password",
-            "Password must contain at least one lowercase letter."
-          );
-        } else if (!regexNumeric.test(password)) {
-          addValidtionError(
-            "password",
-            "Password must contain at least one numeric digit."
-          );
-        }
+    async function submit(event) {
+      console.log("Submitting");
+      // Get form values
+      var fullname = document.getElementById("fullname").value;
+      var email = document.getElementById("email").value;
+      var username = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+      var regexUpperCase = /[A-Z]/; // Match uppercase letters
+      var regexLowerCase = /[a-z]/; // Match lowercase letters
+      var regexNumeric = /[0-9]/; // Match numeric digits
+      var regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        var confirmPassword = document.getElementById("confirmPassword").value;
-        // Check if passwords match
-        if (password !== confirmPassword) {
-          addValidtionError("confirmPassword", "Passwords do not match");
-        }
-        if (!isFormValid) return;
-        var formData = {
-          fullname: fullname,
-          email: email,
-          username: username,
-          password: password,
-        };
-        try {
-          // Send data to backend
-          const response = await fetch(
-            "http://localhost:8080/api/user/signup",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(formData),
-            }
-          );
+      if (!regexEmail.test(email)) {
+        addValidtionError("email", "Please provide a correct email.");
+      }
+      if (!regexUpperCase.test(password)) {
+        addValidtionError(
+          "password",
+          "Password must contain at least one uppercase letter."
+        );
+      } else if (!regexLowerCase.test(password)) {
+        addValidtionError(
+          "password",
+          "Password must contain at least one lowercase letter."
+        );
+      } else if (!regexNumeric.test(password)) {
+        addValidtionError(
+          "password",
+          "Password must contain at least one numeric digit."
+        );
+      }
 
-          const data = await response.json();
+      var confirmPassword = document.getElementById("confirmPassword").value;
+      // Check if passwords match
+      if (password !== confirmPassword) {
+        addValidtionError("confirmPassword", "Passwords do not match");
+      }
+      if (!isFormValid) {
+        isFormValid = true;
+        return;
+      }
+      var formData = {
+        fullname: fullname,
+        email: email,
+        username: username,
+        password: password,
+      };
+      try {
+        // Send data to backend
+        const response = await fetch("http://localhost:8080/api/user/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
 
-          document.getElementById(
-            "signup-message"
-          ).innerHTML = `<p style='color: ${
-            data.Success ? "green" : "red"
-          };'>INFO: ${data.Message}</p>`;
+        const data = await response.json();
 
-          if (data.Success == false) return;
+        document.getElementById(
+          "signup-message"
+        ).innerHTML = `<p style='color: ${
+          data.Success ? "green" : "red"
+        };'>INFO: ${data.Message}</p>`;
 
-          setTimeout(function () {
-            window.location.href = "login.html";
-          }, 2000);
-        } catch (error) {
-          console.log("Some error occurred.");
-        }
-      });
+        if (data.Success == false) return;
+
+        setTimeout(function () {
+          window.location.replace("login.html");
+        }, 2000);
+      } catch (error) {
+        console.log("Some error occurred.");
+      }
+    }
   </script>
 </html>
