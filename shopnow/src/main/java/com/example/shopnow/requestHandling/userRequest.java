@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 public class userRequest {
+
+    // Nested class for signup request
     @Getter
     public static class signupRequest {
         @NotBlank(message = "Fullname cannot be blank.")
@@ -17,6 +19,7 @@ public class userRequest {
         @NotBlank(message = "Password cannot be blank.")
         private String password;
 
+        // Constructor for signup request
         public signupRequest(String fullname, String username, String email, String password) {
             this.fullname = fullname;
             this.username = username;
@@ -24,20 +27,21 @@ public class userRequest {
             this.password = password;
         }
 
+        // Method to convert signup request to userModel object
         public userModel toUserModel(){
             return new userModel(fullname,username,email,password);
         }
     }
 
-
+    // Nested class for login request
     public static class loginRequest {
-
         @NotBlank(message = "Please provide email.")
         private String password;
 
         @NotBlank(message = "Please provide password.")
         private String email;
 
+        // Constructor for login request
         public loginRequest(String email, String password) {
             this.email = email;
             this.password = password;

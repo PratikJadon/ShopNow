@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-
 @Slf4j
 @Service
 public class userService {
@@ -20,14 +19,17 @@ public class userService {
     @Autowired
     private jwtHelper jwtHelper;
 
+    // Method to find a user by its ID
     public Optional<userModel> findById(String id){
         return userRepo.findById(id);
     }
 
+    // Method to update user details
     public void updateUser(userModel user){
         userRepo.save(user);
     }
 
+    // Method to authenticate user login by password
     public userModel loginAuthPass(userModel user) {
         if(BCrypt.checkpw(user.getPassword(), userRepo.findByEmail(user.getEmail()).getPassword())){
             return userRepo.findByEmail(user.getEmail());
@@ -35,26 +37,28 @@ public class userService {
         return null;
     }
 
+    // Method to register a new user
     public userModel registerUser(userModel user) {
         String hashpass = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         user.setPassword(hashpass);
         userModel newUser = userRepo.save(user);
-        user.setPassword(null);
-        newUser.setPassword(null);
+        user.setPassword(null); // Clear sensitive information before returning
+        newUser.setPassword(null); // Clear sensitive information before returning
         return newUser;
     }
 
+    // Method to generate JWT token for user authentication
     public String tokenGen(userModel user) {
         return jwtHelper.tokenGen(user);
     }
 
+    // Method to check if an email already exists in the system
     public boolean isEmailExist(String email) {
         return userRepo.findByEmail(email) != null;
     }
 
+    // Method to check if a username already exists in the system
     public boolean isUsernameExist(String username) {
         return userRepo.findByUsername(username) != null;
     }
-
-
 }

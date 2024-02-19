@@ -5,10 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>ShopNow</title>
+    <link rel="stylesheet" href="loading.css" />
   </head>
   <body
-    class="h-screen bg-gradient-to-tl from-green-400 to-indigo-900 w-full py-16 px-4 flex items-center justify-center"
+    style="background-color: #b47b84"
+    class="h-screen w-full py-16 px-4 flex items-center justify-center"
   >
+    <div id="overlay" hidden>
+      <div class="spinner-wrapper">
+        <div class="spinner">
+          <div class="sk-folding-cube">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="bg-white p-8 rounded shadow-md w-96">
       <h2 class="text-2xl font-semibold mb-4 text-center fa-align-center">
         Sign Up
@@ -102,7 +116,8 @@
       </div>
       <button
         onclick="submit()"
-        class="bg-blue-500 text-white p-2 rounded-md w-full"
+        style="background-color: #944e63"
+        class="text-white p-2 rounded-md w-full"
       >
         Sign Up
       </button>
@@ -112,6 +127,7 @@
         <a href="login.html" class="text-blue-500">Log in</a>
       </p>
     </div>
+    <div id="toastcontainer" class="fixed bottom-0 right-0"></div>
   </body>
   <script>
     var isFormValid = true;
@@ -130,6 +146,7 @@
     // script.js
 
     async function submit(event) {
+      document.getElementById("signup-message").innerHTML = "";
       console.log("Submitting");
       // Get form values
       var fullname = document.getElementById("fullname").value;
@@ -170,12 +187,18 @@
         isFormValid = true;
         return;
       }
+
+      const inputs = document.getElementsByTagName("input");
+      for (let i = 0; i < inputs.length; i++) {
+        inputs[i].value = "";
+      }
       var formData = {
         fullname: fullname,
         email: email,
         username: username,
         password: password,
       };
+      document.getElementById("overlay").hidden = false;
       try {
         // Send data to backend
         const response = await fetch("http://localhost:8080/api/user/signup", {
@@ -188,20 +211,64 @@
 
         const data = await response.json();
 
-        document.getElementById(
-          "signup-message"
-        ).innerHTML = `<p style='color: ${
-          data.Success ? "green" : "red"
-        };'>INFO: ${data.Message}</p>`;
-
-        if (data.Success == false) return;
-
         setTimeout(function () {
+          document.getElementById("overlay").hidden = true;
+          // document.getElementById(
+          //   "signup-message"
+          // ).innerHTML = `<p style='color: ${
+          //   data.Success ? "green" : "red"
+          // };'>INFO: ${data.Message}</p>`;
+          if (!data.Success) {
+            addtoast(data.Message);
+            return;
+          }
           window.location.replace("login.html");
-        }, 2000);
+        }, 1600);
       } catch (error) {
         console.log("Some error occurred.");
       }
+    }
+
+    // TOAST
+    function addtoast(message) {
+      var container = document.getElementById("toastcontainer");
+      var nd = document.createElement("div");
+      nd.setAttribute(
+        "class",
+        "transition duration-300 transform translate-y-full ease-in"
+      );
+      container.insertBefore(nd, container.firstChild);
+      // container.appendChild(nd);
+      nd.innerHTML += `<div id="toast-danger" class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+    <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"/>
+        </svg>
+        <span class="sr-only">Error icon</span>
+    </div>
+    <div class="ms-3 text-sm font-normal">${message}</div>
+    <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-danger" aria-label="Close">
+        <span class="sr-only">Close</span>
+        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+        </svg>
+    </button>
+</div>`;
+      setTimeout(() => {
+        nd.classList.remove("translate-y-full");
+        nd.classList.remove("ease-in");
+        nd.classList.add("translate-y-0");
+        nd.classList.add("ease-out");
+      }, 50);
+
+      setTimeout(() => {
+        nd.classList.add("translate-x-full");
+        nd.classList.add("ease-out-1");
+      }, 3000);
+
+      setTimeout(() => {
+        container.removeChild(nd);
+      }, 5000);
     }
   </script>
 </html>

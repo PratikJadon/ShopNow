@@ -5,10 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>ShopNow</title>
+    <link href="loading.css" rel="stylesheet" />
   </head>
   <body
-    class="h-screen bg-gradient-to-tl from-green-400 to-indigo-900 w-full py-16 px-4 flex items-center justify-center"
+    style="background-color: #b47b84"
+    class="h-screen w-full py-16 px-4 flex items-center justify-center"
   >
+    <div id="overlay" hidden>
+      <div class="spinner-wrapper">
+        <div class="spinner">
+          <div class="sk-folding-cube">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="bg-white p-8 rounded shadow-md w-96">
       <h2 class="text-2xl font-semibold mb-4 text-center fa-align-center">
         Login
@@ -43,7 +58,8 @@
         </div>
         <button
           type="submit"
-          class="bg-blue-500 text-white p-2 rounded-md w-full"
+          style="background-color: #944e63"
+          class="text-white p-2 rounded-md w-full"
           onclick=""
         >
           Login
@@ -61,6 +77,7 @@
         .getElementById("loginForm")
         .addEventListener("submit", function (event) {
           event.preventDefault();
+          document.getElementById("overlay").hidden = false;
           const email = document.getElementById("email").value;
           const password = document.getElementById("password").value;
 
@@ -95,16 +112,20 @@
               document.getElementById(
                 "login-message"
               ).innerHTML = `<p style='color: green;'>${data.Message}</p>`;
-
+              console.log("asodskp");
               const token = data.Token;
               // Store the token in local storage
               localStorage.setItem("token", token);
               // Redirect to the dashboard page after a delay (e.g., 2 seconds)
               setTimeout(function () {
+                document.getElementById("overlay").hidden = true;
                 window.location.replace("dashboard.html");
               }, 1500);
             })
             .catch((error) => {
+              setTimeout(function () {
+                document.getElementById("overlay").hidden = true;
+              }, 1500);
               console.error("Error:", error);
               // Handle network errors or any other unexpected errors
             });

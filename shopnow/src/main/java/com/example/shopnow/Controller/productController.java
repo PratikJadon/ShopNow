@@ -29,10 +29,11 @@ public class productController {
     @Autowired
     private userService userService;
 
+    // Get products endpoint
     @GetMapping
-    public ResponseEntity getProduct(@RequestParam(required = false) String sortPrice, @RequestParam(required = false) String category, @RequestParam(required = false) String searchKey, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity getProduct(@RequestParam(required = false) String sortPrice, @RequestParam(required = false) String gender,@RequestParam(required = false) String category, @RequestParam(required = false) String searchKey, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        List<productModel> products = prodService.findProducts(sortPrice, category, searchKey, pageable);
+        List<productModel> products = prodService.findProducts(sortPrice,gender, category, searchKey, pageable);
         return ResponseEntity.ok().body(new HashMap<String, Object>() {{
             put("Success", true);
             put("Data", products);
@@ -40,6 +41,7 @@ public class productController {
         }});
     }
 
+    // Add to cart endpoint
     @GetMapping("/addcart")
     public ResponseEntity addToCart(ServletRequest request, @RequestParam String productId) {
         String userid = request.getAttribute("user").toString();
@@ -61,10 +63,11 @@ public class productController {
         log.info("Item added to cart");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<String,Object>(){{
             put("Success",true);
-            put("Message","Item added in cart.");
+            put("Message","Item added in cart with id -> " + productId);
         }});
     }
 
+    // Delete from cart endpoint to decrease products quantity in cart.
     @GetMapping("/deletecart")
     public ResponseEntity deleteFromCart(ServletRequest request, @RequestParam String productId) {
         String userid = request.getAttribute("user").toString();
@@ -81,20 +84,21 @@ public class productController {
                 cart.remove(existingCartItem.get());
             }
         } else {
-            log.warn("Item you are removing doesn't exists in cart.");
+            log.warn("Item you are removing doesn't exists in cart with id ->" + productId);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<String,Object>(){{
                 put("Success",true);
                 put("Message","Item doesn't exists in cart.");
             }});
         }
         userService.updateUser(user.get());
-        log.info("Item removed from cart.");
+        log.info("Item removed from cart with id ->" + productId);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<String,Object>(){{
             put("Success",true);
             put("Message","Item removed from cart.");
         }});
     }
 
+    // Get cart endpoint
     @GetMapping("/getcart")
     public ResponseEntity getCart(ServletRequest request){
         String userid = request.getAttribute("user").toString();
@@ -123,10 +127,44 @@ public class productController {
                 }
             }
         }
+        log.info("Cart is fetched with size ->" + populatedCart.size());
         return ResponseEntity.ok().body(new HashMap<String,Object>(){{
             put("Products",populatedCart);
             put("Quantity",populatedCartQuantity);
         }}); // Return empty list with informative message
     }
 
+    // Clear cart endpoint
+    @GetMapping("/clearcart")
+    public ResponseEntity clearCart(ServletRequest req){
+        String userid = req.getAttribute("user").toString();
+        Optional<userModel> user = userService.findById(userid);
+        List<cartModel> cart = new ArrayList<>();
+        user.get().setCart(cart);
+        userService.updateUser(user.get());
+        log.info("User cart is successfully cleared.");
+        return ResponseEntity.ok().body(new HashMap<String,Object>(){{
+            put("Success",true);
+            put("Message","Purchase done.");
+        }});
+    }
+
+    // Remove item from cart endpoint
+    @GetMapping("/removeitem")
+    public ResponseEntity removeItem(@RequestParam String productId,ServletRequest req){
+        String userid = req.getAttribute("user").toString();
+        Optional<userModel> user = userService.findById(userid);
+        List<cartModel> cart=  user.get().getCart();
+        Optional<cartModel> existingCartItem = cart.stream()
+                .filter(item -> item.getProductId().equals(productId))
+                .findFirst();
+        existingCartItem.ifPresent(cart::remove);
+
+        userService.updateUser(user.get());
+        log.info("All Items are removed from cart successfully with id -> "+ productId);
+        return ResponseEntity.ok().body(new HashMap<String,Object>(){{
+            put("Success",true);
+            put("Message","Item removed.");
+        }});
+    }
 }

@@ -11,8 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Setter
 public class cartModel {
-
-
     @NotBlank(message = "Cart must have amount of products in it.")
     private int quantity;
 

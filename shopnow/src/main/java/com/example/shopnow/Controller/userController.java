@@ -21,6 +21,7 @@ public class userController {
     @Autowired
     private userService userService;
 
+    // Endpoint for user registration (signup)
     @PostMapping("/signup")
     ResponseEntity signup(@Valid @RequestBody userModel user) {
         if (userService.isEmailExist(user.getEmail())) {
@@ -48,6 +49,7 @@ public class userController {
         }});
     }
 
+    // Endpoint for user login
     @PostMapping("/login")
     ResponseEntity login(@RequestBody userModel user){
         if(StringUtils.isEmpty(user.getEmail()) || StringUtils.isEmpty(user.getPassword())){
@@ -80,4 +82,5 @@ public class userController {
         }});
 
     }
+
 }

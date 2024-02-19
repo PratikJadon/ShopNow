@@ -28,6 +28,11 @@ async function addtocart(event) {
       },
     }
   );
+  if (reponse.status == 401) {
+    alert("You are not logged in.");
+    window.location.replace("login.html");
+    return;
+  }
   spinner.hidden = true;
   addtoast();
   const data = await reponse.json();
@@ -63,7 +68,7 @@ function addtoast() {
         </svg>
         <span class="sr-only">Check icon</span>
       </div>
-      <div class="ms-3 text-sm font-normal">Item moved successfully.</div>
+      <div class="ms-3 text-sm font-normal">Item added to cart.</div>
       <button
         type="button"
         class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
@@ -129,6 +134,11 @@ async function getCart(token) {
       Authorization: `Bearer ${token}`,
     },
   });
+  if (response.status == 401) {
+    alert("You are not logged in.");
+    window.location.replace("login.html");
+    return;
+  }
   const data = await response.json();
   return data;
 }
@@ -186,8 +196,10 @@ async function populatecart() {
   </p>
   <div class="mt-6">
     <a
-      href="#"
-      class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+
+      onclick="openmodal()"
+      style="background-color: #944E63;"
+      class="cursor-pointer flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
       >Checkout</a
     >
   </div>
@@ -210,11 +222,45 @@ async function populatecart() {
 </div>`;
 }
 
+async function clearcart() {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`http://localhost:8080/api/products/clearcart`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status == 401) {
+    alert("You are not logged in.");
+    window.location.replace("login.html");
+    return;
+  }
+  const data = await response.json();
+  return data;
+}
+
+function closemodal() {
+  document.getElementById("static-modal").hidden = true;
+}
+
+async function openmodal() {
+  const token = localStorage.getItem("token");
+  const data = await getCart(token);
+  if (data.Products.length == 0) return;
+  togglecart();
+  document.getElementById("overlay").hidden = false;
+  setTimeout(() => {
+    document.getElementById("static-modal").hidden = false;
+    clearcart();
+    document.getElementById("overlay").hidden = true;
+  }, 500);
+}
+
 function cartItems(imageurl, title, quantity, price, prodid, token) {
   return `<div class="flex justify-between mt-6">
     <div class="flex">
       <img
-        class="h-20 w-20 object-cover rounded"
+        class="h-20 w-12 object-contain rounded"
         src=${imageurl}
         alt=""
       />
@@ -259,10 +305,34 @@ function cartItems(imageurl, title, quantity, price, prodid, token) {
             >
               <path d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
+            <button
+            onclick="removeItem(this)"
+            dataagr1=${prodid}
+            dataagr2=${token}
+            style="background-color:#B47B84;"
+            class="text-white p-1 m-auto rounded-md hover:bg-indigo-700 rounded"
+            id="removeItem"
+          >Remove
           </button>
         </div>
       </div>
     </div>
     <span class="text-gray-600">$${price}</span>
   </div>`;
+}
+
+async function removeItem(event) {
+  var productid = event.attributes.dataagr1.nodeValue;
+  var token = event.attributes.dataagr2.nodeValue;
+  const reponse = await fetch(
+    `http://localhost:8080/api/products/removeitem?productId=${productid}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const data = await reponse.json();
+  populatecart();
 }
