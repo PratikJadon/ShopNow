@@ -30,5 +30,8 @@ public class productModel {
 
     private String category;
     private String gender;
+    
+    @NotBlank(message = "Quantity cannot be blank.")
+    private int totalQuantity;
 
 }

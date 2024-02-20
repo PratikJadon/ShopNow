@@ -75,8 +75,12 @@ async function categRender() {
     productCardClone.style.display = "block";
     productCardClone.querySelector("#productImage").src = product.photos;
     productCardClone.querySelector("#productName").textContent = product.title;
-    productCardClone.querySelector("#productDescription").textContent =
-      product.attributes != null ? Object.entries(product.attributes) : "";
+    if (product.totalQuantity <= 4) {
+      productCardClone.querySelector("#productQuantity").hidden = false;
+      productCardClone.querySelector(
+        "#productQuantity"
+      ).textContent = `Hurry, Only ${product.totalQuantity} Left!`;
+    }
     productCardClone.querySelector(
       "#productPrice"
     ).textContent = `$${product.price.toFixed(2)}`;

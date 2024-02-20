@@ -11,7 +11,26 @@ async function cart_addtocart(event) {
     }
   );
   const data = await reponse.json();
-  populatecart();
+  // addtoast(data.Success, data.Message);
+  if (data.Success) populatecart();
+  if (!data.Success) cartMaxAmountReached(productid);
+}
+
+function cartMaxAmountReached(prodId) {
+  var itemId = "cartitem_" + prodId;
+  if (document.getElementById(itemId)) {
+    document.getElementById(itemId).classList.remove("translate-x-full");
+    document.getElementById(itemId).classList.add("translate-x-0");
+    document.getElementById(itemId).classList.add("opacity-1");
+    document.getElementById(itemId).classList.remove("opacity-0");
+
+    setTimeout(() => {
+      document.getElementById(itemId).classList.remove("translate-x-0");
+      document.getElementById(itemId).classList.remove("opacity-1");
+      document.getElementById(itemId).classList.add("opacity-0");
+      document.getElementById(itemId).classList.add("translate-x-full");
+    }, 1400);
+  }
 }
 
 async function addtocart(event) {
@@ -34,11 +53,11 @@ async function addtocart(event) {
     return;
   }
   spinner.hidden = true;
-  addtoast();
   const data = await reponse.json();
+  addtoast(data.Success, data.Message);
 }
 
-function addtoast() {
+function addtoast(success, message) {
   var container = document.getElementById("toastcontainer");
   var nd = document.createElement("div");
   nd.setAttribute(
@@ -47,52 +66,9 @@ function addtoast() {
   );
   container.insertBefore(nd, container.firstChild);
   // container.appendChild(nd);
-  nd.innerHTML += `<div
-      id="toast-success"
-      class="flex z-999 items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
-      role="alert"
-    >
-      <div
-        class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200"
-      >
-        <svg
-          class="w-5 h-5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path
-            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"
-          />
-        </svg>
-        <span class="sr-only">Check icon</span>
-      </div>
-      <div class="ms-3 text-sm font-normal">Item added to cart.</div>
-      <button
-        type="button"
-        class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
-        data-dismiss-target="#toast-success"
-        aria-label="Close"
-      >
-        <span class="sr-only">Close</span>
-        <svg
-          class="w-3 h-3"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 14 14"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-          />
-        </svg>
-      </button>
-    </div>`;
+  if (success) nd.innerHTML += getSuccessToast(message);
+  else nd.innerHTML += getDangerToast(message);
+
   setTimeout(() => {
     nd.classList.remove("translate-y-full");
     nd.classList.remove("ease-in");
@@ -102,12 +78,12 @@ function addtoast() {
 
   setTimeout(() => {
     nd.classList.add("translate-x-full");
-    nd.classList.add("ease-out-1");
-  }, 3000);
+    nd.classList.add("ease-out");
+  }, 1600);
 
   setTimeout(() => {
     container.removeChild(nd);
-  }, 5000);
+  }, 2000);
 }
 
 async function deletefromcart(event) {
@@ -124,6 +100,7 @@ async function deletefromcart(event) {
   );
 
   const data = await reponse.json();
+  addtoast(data.Success, data.Message);
   populatecart();
 }
 
@@ -257,7 +234,22 @@ async function openmodal() {
 }
 
 function cartItems(imageurl, title, quantity, price, prodid, token) {
-  return `<div class="flex justify-between mt-6">
+  return `<div class="flex justify-between mt-6 relative">
+  <div  id="cartitem_${prodid}" class="opacity-0 w-full h-full fixed flex justify-start items-center absolute top-0 right-0 transition duration-400 transform translate-x-full ease-in"
+  style="background-color:rgba(27, 26, 26, 0.800);"
+  >
+  
+  <div class="flex items-center justify-center items-center flex-shrink-0 w-20 h-full text-red-500 bg-red-100 rounded-tr rounded-br dark:bg-red-800 dark:text-red-200">
+        <svg class="w-10 h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"/>
+        </svg>
+        <span class="sr-only">Error icon</span>
+    </div>
+  <p class="m-auto text-white">
+   Item max stock reached.
+</p>
+
+  </div>
     <div class="flex">
       <img
         class="h-20 w-12 object-contain rounded"
