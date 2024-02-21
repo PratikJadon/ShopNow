@@ -1,3 +1,10 @@
+let categ = null;
+let gender = null;
+let sort = "asc";
+let searchterm = null;
+let baseUrl = "http://localhost:8080/api/products";
+var withGender = ["clothes", "watches", "accessories"];
+
 document.querySelector(".jsFilter").addEventListener("click", function () {
   document.querySelector(".filter-menu").classList.toggle("active");
 });
@@ -18,95 +25,235 @@ document.querySelector(".list").addEventListener("click", function () {
   document.querySelector(".products-area-wrapper").classList.add("tableView");
 });
 
-var modeSwitch = document.querySelector(".mode-switch");
-modeSwitch.addEventListener("click", function () {
+window.addEventListener("DOMContentLoaded", () => {
+  render();
   document.documentElement.classList.toggle("light");
-  modeSwitch.classList.toggle("active");
 });
 
 /*----------------my script----------------- */
-document.addEventListener("DOMContentLoaded", async function () {
+function logout() {
+  localStorage.clear();
+  window.location.replace("login.html");
+}
+
+async function render() {
+  var result = await fetchProduct();
+  const productsContainer = document.getElementById("table-container");
+  productsContainer.innerHTML = "";
+  // Populate product rows dynamically
+  result.Data.forEach((product) => {
+    productsContainer.innerHTML += getTable(product);
+  });
+}
+
+async function fetchProduct() {
+  let params = [];
+
+  // Add category to params if it's not null
+  if (categ) {
+    params.push(`category=${categ}`);
+  }
+
+  // Add gender to params if it's not null
+  if (gender) {
+    params.push(`gender=${gender}`);
+  }
+
+  // Add sortByPrice to params if it's not null
+  if (sort) {
+    params.push(`sortPrice=${sort}`);
+  }
+  if (searchterm) {
+    params.push(`searchKey=${searchterm}`);
+  }
+  var newUrl = baseUrl;
+  // Concatenate params array with '&' and append to baseUrl if params are present
+  if (params.length > 0) {
+    newUrl += "?" + params.join("&");
+  }
   document.getElementById("overlay").hidden = false;
-  const productsContainer = document.getElementById("products-container");
   const loadingSpinner = document.getElementById("overlay");
-  const url= "http://localhost:8080/api/products"
   const token = localStorage.getItem("token");
-  const response = await fetch(url, {
-        method: "GET", // Method should be specified outside of the headers object
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-   const result= await response.json();
-   console.log(result);
-   loadingSpinner.hidden = true;
-       // Populate product rows dynamically
-      result.Data.forEach((product) => {
-                                             const newRow = document.createElement("tr");
-                                             newRow.classList.add("product-row")
-                                             // Product Image
-                                            var prodImg = document.createElement("td");
-                                            var productImage = document.createElement("img");
+  const response = await fetch(newUrl, {
+    method: "GET", // Method should be specified outside of the headers object
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const result = await response.json();
+  if (response.status == 401) {
+    alert("You are not logged in.");
+    window.location.replace("login.html");
+    return;
+  }
+  loadingSpinner.hidden = true;
+  return result;
+}
 
-                                            productImage.src = product.photos;
-                                            productImage.alt = product.title;
-                                            productImage.style.width = "32px"; // Adjust the width as needed
-                                            productImage.style.height = "32px";
-                                            newRow.appendChild(productImage);
+document
+  .getElementById("searchBox")
+  .addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      searchterm = event.target.value;
+      render();
+    }
+  });
 
+async function increaseStock(e) {
+  const token = localStorage.getItem("token");
+  const productid = e.attributes.dataarg1.nodeValue;
+  const response = await fetch(
+    `http://localhost:8080/api/products/incstock?productId=${productid}`,
+    {
+      method: "GET", // Method should be specified outside of the headers object
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const data = await response.json();
+  document.getElementById("overlay").hidden = false;
+  setTimeout(() => {
+    document.getElementById("overlay").hidden = true;
+    render();
+  }, 500);
+}
+async function removeStock(e) {
+  const token = localStorage.getItem("token");
+  const productid = e.attributes.dataarg1.nodeValue;
+  const response = await fetch(
+    `http://localhost:8080/api/products/remstock?productId=${productid}`,
+    {
+      method: "GET", // Method should be specified outside of the headers object
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const data = await response.json();
+  document.getElementById("overlay").hidden = false;
+  setTimeout(() => {
+    document.getElementById("overlay").hidden = true;
+    render();
+  }, 500);
+}
 
-                                            // Product Name
-                                             var nameCell = document.createElement("td");
-                                             nameCell.textContent = product.title;
-                                             newRow.appendChild(nameCell);
+async function decreaseStock(e) {
+  const token = localStorage.getItem("token");
+  const productid = e.attributes.dataarg1.nodeValue;
+  const response = await fetch(
+    `http://localhost:8080/api/products/decstock?productId=${productid}`,
+    {
+      method: "GET", // Method should be specified outside of the headers object
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const data = await response.json();
+  document.getElementById("overlay").hidden = false;
+  setTimeout(() => {
+    document.getElementById("overlay").hidden = true;
+    render();
+  }, 500);
+}
 
-//                                             // Product Quantity
-//                                             var quantityCell = document.createElement("td");
-//                                             quantityCell.classList.add("product-cell");
-//                                             if (product.totalQuantity <= 4) {
-//                                               quantityCell.textContent = `Hurry, Only ${product.totalQuantity} Left!`;
-//                                             }
+function getCateg() {
+  var select = document.getElementById("category");
+  if (select.value == "All Categories") {
+    categ = null;
+  } else {
+    categ = select.value.toLowerCase();
+  }
 
-                                             // Product Price
-                                             var priceCell = document.createElement("td");
-                                             priceCell.textContent = `$${product.price.toFixed(2)}`;
-                                             newRow.appendChild(priceCell);
+  if (withGender.includes(categ)) {
+    document.getElementById("gender").disabled = false;
+  } else {
+    document.getElementById("gender").value = "None";
+    document.getElementById("gender").disabled = true;
+    gender = null;
+  }
+  render();
+}
 
+function getGender() {
+  var select = document.getElementById("gender");
+  if (select.value == "None") {
+    gender = null;
+  } else {
+    gender = select.value.toLowerCase();
+  }
+  render();
+}
 
+async function addprodBTN(e) {
+  e.preventDefault();
+  var quantity = document.getElementById("totalquantity").value;
+  var price = document.getElementById("price").value;
+  var photos = document.getElementById("photos").value;
+  var title = document.getElementById("title").value;
+  var rating = document.getElementById("rating").value;
+  var category = document.getElementById("add_category").value;
+  var gender = document.getElementById("add_gender").value;
 
-                                             // Append the product row to the products container
-                                             productsContainer.appendChild(newRow);
-                                           });
-    })
+  var body = {
+    title: title,
+    photos: photos,
+    rating: rating,
+    price: Number(price),
+    category: category == "None" ? null : category.toLowerCase(),
+    gender: gender == "None" ? null : gender.toLowerCase(),
+    totalQuantity: Number(quantity),
+  };
+  const token = localStorage.getItem("token");
+  const response = await fetch(`http://localhost:8080/api/products/addstock`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+  const data = await response.json();
+  document.getElementById("prodForm").reset();
+}
 
-
-function getRow(product){
-return `<tr class="border-b border-gray-200 hover:bg-gray-100 cursor-pointer">
-                        <td class="py-3 px-4 text-xs font-medium">1</td>
-                        <td class="py-3 px-4 text-xs font-medium">
-                            <div class="flex items-center">
-                                <img src="https://scores.iplt20.com/ipl/teamlogos/GT.png" alt="Player Photo" class="w-12 h-12 rounded-full mr-2">
-                                <span>Gujrat Titans</span>
-                                <img src=${product.photos} alt="Player Photo" class="w-4 h-4 rounded-full ml-2">
-                            </div>
-                        </td>
-                        <td class="py-3 px-4 text-xs">14</td>
-                        <td class="py-3 px-4 text-xs">10</td>
-                        <td class="py-3 px-4 text-xs">4</td>
-                        <td class="py-3 px-4 text-xs">0</td>
-                        <td class="py-3 px-4 text-xs">0.809</td>
-                        <td class="py-3 px-4 text-xs">2450/268.1</td>
-                        <td class="py-3 px-4 text-xs">2326/279.2</td>
-                        <td class="py-3 px-4 text-xs">20</td>
-                        <td class="py-3 px-4 text-xs">
-                            <div class = "flex align-center">
-                                <span class="rf W">W</span>
-                                <span class="rf L">L</span>
-                                <span class="rf W">W</span>
-                                <span class="rf W">W</span>
-                                <span class="rf L">L</span>
-                            </div>
-                        </td>
-                    </tr>`
+function getTable(product) {
+  return `<tr class="bg-white border-b dark:hover:bg-gray-100">
+                            <td class="p-4">
+                                <img src="${product.photos}" class="w-16 md:w-32 h-24 object-contain" alt="Image">
+                            </td>
+                            <td class="px-6 py-4 font-normal text-gray-900 dark:text-black">
+                                ${product.title}
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <button dataarg1=${product.id} onclick="decreaseStock(this)" class="inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full bg-white" type="button">
+                                        <span class="sr-only">Quantity button</span>
+                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        </svg>
+                                    </button>
+                                    <div>
+                                        <input  id="first_product" class="bg-gray-100 text-center w-14 border border-gray-300 text-gray-900 text-sm rounded-lg block px-2.5 py-1  dark:border-gray-600 dark:text-black" placeholder="${product.totalQuantity}"  disabled/>
+                                    </div>
+                                    <button dataarg1=${product.id} onclick="increaseStock(this)" class="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 " type="button">
+                                        <span class="sr-only">Quantity button</span>
+                                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-black">
+                                $${product.price}
+                            </td>
+                            <td class="px-6 py-4">
+                                <a onclick="removeStock(this)" dataarg1="${product.id}" class="p-2 rounded-lg cursor-pointer font-medium text-red-600 dark:text-red-500 hover:bg-white ">Remove</a>
+                            </td>
+    </tr>`;
 }

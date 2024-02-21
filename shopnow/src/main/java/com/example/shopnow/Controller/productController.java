@@ -6,6 +6,7 @@ import com.example.shopnow.Models.userModel;
 import com.example.shopnow.Service.productService;
 import com.example.shopnow.Service.userService;
 import jakarta.servlet.ServletRequest;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -161,6 +162,86 @@ public class productController {
         return ResponseEntity.ok().body(new HashMap<String, Object>() {{
             put("Success", true);
             put("Message", "Item removed.");
+        }});
+    }
+
+    @GetMapping("/incstock")
+    public ResponseEntity increaseStock(@RequestParam String productId) throws Exception {
+        Optional<productModel> prod = prodService.findById(productId);
+        if (prod.isEmpty()) {
+            log.error("Product stock cannot be increased.");
+            return ResponseEntity.ok().body(new HashMap<String, Object>() {{
+                put("Success", false);
+                put("Message", "Product stock cannot be increased.");
+            }});
+        }
+        prod.get().setTotalQuantity(prod.get().getTotalQuantity() + 1);
+        prodService.save(prod.get());
+        log.info("Product stock increased.");
+        return ResponseEntity.ok().body(new HashMap<String, Object>() {{
+            put("Success", true);
+            put("Message", "Product stock increased.");
+        }});
+    }
+
+    @GetMapping("/decstock")
+    public ResponseEntity decreaseStock(@RequestParam String productId) {
+        Optional<productModel> prod = prodService.findById(productId);
+        if (prod.isEmpty()) {
+            log.error("Product stock cannot be decreased.");
+            return ResponseEntity.ok().body(new HashMap<String, Object>() {{
+                put("Success", false);
+                put("Message", "Product stock cannot be decreased.");
+            }});
+        }
+        if (prod.get().getTotalQuantity() <= 1) {
+            prodService.delete(prod.get());
+            log.info("Product stock decreased to 0 and removed.");
+        } else {
+            prod.get().setTotalQuantity(prod.get().getTotalQuantity() - 1);
+            prodService.save(prod.get());
+            log.info("Product stock decreased.");
+        }
+        return ResponseEntity.ok().body(new HashMap<String, Object>() {{
+            put("Success", true);
+            put("Message", "Product stock decreased.");
+        }});
+    }
+
+    @GetMapping("/remstock")
+    public ResponseEntity removeStock(@RequestParam String productId) {
+        Optional<productModel> prod = prodService.findById(productId);
+        if (prod.isEmpty()) {
+            log.error("Product stock cannot be removed.");
+            return ResponseEntity.ok().body(new HashMap<String, Object>() {{
+                put("Success", false);
+                put("Message", "Product stock cannot be removed.");
+            }});
+        }
+        prodService.delete(prod.get());
+        log.info("Product stock removed.");
+        return ResponseEntity.ok().body(new HashMap<String, Object>() {{
+            put("Success", true);
+            put("Message", "Product stock removed.");
+        }});
+    }
+
+    @PostMapping("/addstock")
+    public ResponseEntity addStock(@RequestBody @Valid productModel prod){
+        productModel checkprod = prodService.findbyTitle(prod.getTitle());
+        if(checkprod != null){
+            log.info("Product already exists so cannot be re-added.");
+            return ResponseEntity.ok().body(new HashMap<String,Object>(){{
+                put("Success",false);
+                put("Message","Product already exists so cannot be re-added.");
+            }});
+        }
+
+        log.info("Product added.");
+        prodService.save(prod);
+        return ResponseEntity.ok().body(new HashMap<String,Object>(){{
+            put("Success",true);
+            put("Message","Product added.");
         }});
     }
 }

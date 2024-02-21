@@ -37,6 +37,12 @@ public class productService {
     public Optional<productModel> findById(String prodid) {
         return productRepo.findById(prodid);
     }
+    public productModel findbyTitle(String prodTitle) {
+        return productRepo.findByTitle(prodTitle);
+    }
+
+    public void save(productModel prod) { productRepo.save(prod); }
+    public void delete(productModel prod) {productRepo.delete(prod);}
 
     // Method to find products based on various criteria
     public Page<productModel> findProducts(String sortByPrice, String gender, String category, String searchKeyword, Pageable pageable) {

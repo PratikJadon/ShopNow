@@ -19,6 +19,7 @@ class ExpectionHanlder {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
+        log.warn("Validation Error");
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
@@ -38,6 +39,15 @@ class ExpectionHanlder {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity handleHttpMessageNotReadableException(HttpMessageNotReadableException er){
         return ResponseEntity.badRequest().body(new HashMap<String,String>(){{
+            put("Message",er.getLocalizedMessage());
+        }});
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity customException(Exception er){
+        return ResponseEntity.badRequest().body(new HashMap<String,Object>(){{
+            put("Success",false);
+            put("ErrorType",er.getClass());
             put("Message",er.getLocalizedMessage());
         }});
     }

@@ -1,6 +1,7 @@
 package com.example.shopnow.Models;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -25,13 +26,25 @@ public class productModel {
     private Object attributes;
 
     private String rating;
-    @NotBlank(message = "Price cannot be blank.")
+    @NotNull(message = "Price cannot be blank.")
     private int price;
 
     private String category;
     private String gender;
     
-    @NotBlank(message = "Quantity cannot be blank.")
+    @NotNull(message = "Quantity cannot be blank.")
     private int totalQuantity;
+
+    public productModel(String title,String photos,Object attributes,String rating,int price,String category,String gender,int totalQuantity){
+        this.title = title;
+        this.photos = photos;
+        this.attributes = attributes;
+        this.rating = rating;
+        this.price = price;
+        this.category  = category;
+        this.gender = gender;
+        this.totalQuantity = totalQuantity;
+    }
+
 
 }
