@@ -328,3 +328,48 @@ async function removeItem(event) {
   const data = await reponse.json();
   populatecart();
 }
+
+
+document.getElementById('place-order').addEventListener('click', async () => {
+  const address = document.getElementById('address').value;
+  const zipcode = document.getElementById('zipcode').value;
+  const city = document.getElementById('city').value;
+  const state = document.getElementById('state').value;
+  const cardNumber = document.getElementById('card').value;
+
+  const token = localStorage.getItem("token");
+
+  // Assuming you have a function to get the cart products on the client side
+  const cartProducts = getCart(token);
+
+  const orderData = {
+    
+    shipping: { address, zipcode, city, state },
+    payment: { cardNumber },
+    products: cartProducts,
+    token:{}
+  };
+
+  try {
+    const response = await fetch('/api/order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(orderData),
+    });
+
+    if (response.ok) {
+      const result = await response.text();
+      console.log(result);
+      // You can handle success UI updates or redirection here
+    } else {
+      const errorData = await response.text();
+      console.error(errorData);
+      // You can handle error UI updates here
+    }
+  } catch (error) {
+    console.error('Network error:', error);
+    // You can handle network error UI updates here
+  }
+});
