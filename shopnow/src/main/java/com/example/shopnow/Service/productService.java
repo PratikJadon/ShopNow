@@ -82,6 +82,10 @@ public class productService {
         return new PageImpl<>(products, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), totalElements);
     }
 
+    public List<cartModel> getUserCart(List<cartModel> cart) {
+        // You might want to filter out items with quantity 0 or handle it based on your requirements
+        return cart;}
+
     public boolean addtoCart(List<cartModel> cart, String productId) {
         Optional<cartModel> existingCartItem = cart.stream()
                 .filter(item -> item.getProductId().equals(productId))
