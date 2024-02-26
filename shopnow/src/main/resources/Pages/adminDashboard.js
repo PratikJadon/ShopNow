@@ -32,8 +32,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
 /*----------------my script----------------- */
 function logout() {
-  localStorage.clear();
-  window.location.replace("login.html");
+  // localStorage.clear();
+  window.location.replace("http://localhost:5173/auth");
 }
 
 async function render() {
@@ -71,9 +71,12 @@ async function fetchProduct() {
   if (params.length > 0) {
     newUrl += "?" + params.join("&");
   }
+  console.log(newUrl);
+
   document.getElementById("overlay").hidden = false;
   const loadingSpinner = document.getElementById("overlay");
   const token = localStorage.getItem("token");
+  console.log(token);
   const response = await fetch(newUrl, {
     method: "GET", // Method should be specified outside of the headers object
     headers: {
@@ -82,9 +85,10 @@ async function fetchProduct() {
     },
   });
   const result = await response.json();
+  console.log(result);
   if (response.status == 401) {
-    alert("You are not logged in.");
-    window.location.replace("login.html");
+    // alert("You are not logged in.");
+    // window.location.replace("http://localhost:5173/auth");
     return;
   }
   loadingSpinner.hidden = true;

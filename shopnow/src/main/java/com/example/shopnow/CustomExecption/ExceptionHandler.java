@@ -37,12 +37,13 @@ class ExpectionHanlder {
 
     // Exception handler for HttpMessageNotReadableException
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity handleHttpMessageNotReadableException(HttpMessageNotReadableException er){
+    public ResponseEntity<HashMap<String,String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException er){
         return ResponseEntity.badRequest().body(new HashMap<String,String>(){{
             put("Message",er.getLocalizedMessage());
         }});
     }
 
+//    Handles all exceptions that are not specifically mentioned
     @ExceptionHandler(Exception.class)
     public ResponseEntity customException(Exception er){
         return ResponseEntity.badRequest().body(new HashMap<String,Object>(){{

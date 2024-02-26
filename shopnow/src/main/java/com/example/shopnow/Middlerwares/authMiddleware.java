@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import java.io.IOException;
 
 @Slf4j
-@WebFilter(urlPatterns = "/api/products/*")
+@WebFilter(urlPatterns = {"/api/products/*", "/api/user/auth", "/api/order/*"})
 public class authMiddleware implements Filter {
     @Autowired
     private jwtHelper jwtHelper;

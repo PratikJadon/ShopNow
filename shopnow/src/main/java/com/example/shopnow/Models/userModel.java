@@ -34,6 +34,7 @@ public class userModel {
 
     @NotBlank(message = "Username cannot be blank.")
     private String username;
+    private String role;
 
     private List<cartModel> cart;
 

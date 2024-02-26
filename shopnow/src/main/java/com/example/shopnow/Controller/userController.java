@@ -21,9 +21,19 @@ public class userController {
     @Autowired
     private userService userService;
 
+//   Just Checks that user is authenticated or not endpoint
+    @PostMapping("/auth")
+    ResponseEntity<HashMap<String,Object>> checkToken(@RequestBody String token){
+        log.info("User is authenticated");
+        return ResponseEntity.ok().body(new HashMap<String,Object>(){{
+            put("Success",true);
+            put("Message","You are logged in.");
+        }});
+    }
+
     // Endpoint for user registration (signup)
     @PostMapping("/signup")
-    ResponseEntity signup(@Valid @RequestBody userModel user) {
+    ResponseEntity<HashMap<String,Object>> signup(@Valid @RequestBody userModel user) {
         if (userService.isEmailExist(user.getEmail())) {
             log.warn("User with this email already exists.");
             return ResponseEntity.ok().body(new HashMap<String, Object>() {{
@@ -51,7 +61,7 @@ public class userController {
 
     // Endpoint for user login
     @PostMapping("/login")
-    ResponseEntity login(@RequestBody userModel user){
+    ResponseEntity<HashMap<String,Object>> login(@RequestBody userModel user){
         if(StringUtils.isEmpty(user.getEmail()) || StringUtils.isEmpty(user.getPassword())){
             log.warn("Please provide Username and Password");
             return ResponseEntity.badRequest().body(new HashMap<String,Object>(){{

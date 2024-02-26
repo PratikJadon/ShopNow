@@ -35,16 +35,4 @@ public class productModel {
     @NotNull(message = "Quantity cannot be blank.")
     private int totalQuantity;
 
-    public productModel(String title,String photos,Object attributes,String rating,int price,String category,String gender,int totalQuantity){
-        this.title = title;
-        this.photos = photos;
-        this.attributes = attributes;
-        this.rating = rating;
-        this.price = price;
-        this.category  = category;
-        this.gender = gender;
-        this.totalQuantity = totalQuantity;
-    }
-
-
 }

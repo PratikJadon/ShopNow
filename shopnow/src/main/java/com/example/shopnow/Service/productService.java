@@ -8,19 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.aggregation.SortOperation;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.web.PageableArgumentResolver;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +38,7 @@ public class productService {
     public void save(productModel prod) { productRepo.save(prod); }
     public void delete(productModel prod) {productRepo.delete(prod);}
 
-    // Method to find products based on various criteria
+    // Method to find products based on various criteria and return product data along with pagination
     public Page<productModel> findProducts(String sortByPrice, String gender, String category, String searchKeyword, Pageable pageable) {
         Criteria criteria = new Criteria();
         String[] withGenderCategory = {"clothes", "watches", "accessories"};
@@ -82,10 +76,7 @@ public class productService {
         return new PageImpl<>(products, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), totalElements);
     }
 
-    public List<cartModel> getUserCart(List<cartModel> cart) {
-        // You might want to filter out items with quantity 0 or handle it based on your requirements
-        return cart;}
-
+//    Increase cart item by 1
     public boolean addtoCart(List<cartModel> cart, String productId) {
         Optional<cartModel> existingCartItem = cart.stream()
                 .filter(item -> item.getProductId().equals(productId))
@@ -105,6 +96,7 @@ public class productService {
         return true;
     }
 
+//    Decrease cart item by 1
     public boolean deleteFromCart(List<cartModel> cart, String productId) {
         Optional<cartModel> existingCartItem = cart.stream()
                 .filter(item -> item.getProductId().equals(productId))

@@ -7,15 +7,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class OrderService {
+public class orderService {
     private final OrderRepository orderRepository;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository) {
+    public orderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
 
-    public void placeOrder(orderModel order) {
+    public void save(orderModel order) {
         orderRepository.save(order);
     }
 
