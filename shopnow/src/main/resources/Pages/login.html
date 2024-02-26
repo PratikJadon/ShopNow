@@ -1,151 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop now</title>
-    <style>
-        body {
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>ShopNow</title>
+    <link href="loading.css" rel="stylesheet" />
+  </head>
+  <body
+    style="background-color: #b47b84"
+    class="h-screen w-full py-16 px-4 flex items-center justify-center"
+  >
+    <div id="overlay" hidden>
+      <div class="spinner-wrapper">
+        <div class="spinner">
+          <div class="sk-folding-cube">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            background: rgb(125, 117, 117);
-            display: flex;
-            align-items: center;
-            height: 100vh;
-            width: 100%;
-            margin: 0;
-            background-image: url("bg.jpg");
-            background-size: cover; /* Adjusts the background image size to cover the entire container */
-            background-repeat: no-repeat; /* Prevents the background image from repeating */
-            background-position: center; /* Centers the background image */
-        }
+    <div class="bg-white p-8 rounded shadow-md w-96">
+      <h2 class="text-2xl font-semibold mb-4 text-center fa-align-center">
+        Login
+      </h2>
+      <div id="login-message"></div>
 
-        form {
-            background: #5d7b9a;
-            padding: 20px;
-            width: 25%;
-            margin-left: 10%;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 50px;
-        }
-
-        .loginForm{
-            max-width: 400px;
-            
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 2px;
-        }
-
-        p.head{
-            font-weight: bold;
-            text-align: center;
-            font-size: x-large;
-        }
-        
-        input {
-            width: 90%;
-            margin-bottom: 8px;
-            padding: 10px;
-            border: none;
-            background-color: #ffffff;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button {
-            width: 60%;
-            padding: 10px;
-            margin-left: 17%;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    
-    <form id="loginForm">
-        <p class="head">LOGIN</p>
-        
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="username" placeholder="E-mail" required>
+      <form id="loginForm">
+        <div class="mb-4">
+          <label for="email" class="block text-sm font-medium text-gray-600"
+            >Email</label
+          >
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="mt-1 p-2 w-full border rounded-md"
+            required
+          />
         </div>
 
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" placeholder="Username" required>
+        <div class="mb-4">
+          <label for="password" class="block text-sm font-medium text-gray-600"
+            >Password</label
+          >
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="mt-1 p-2 w-full border rounded-md"
+            required
+          />
         </div>
+        <button
+          type="submit"
+          style="background-color: #944e63"
+          class="text-white p-2 rounded-md w-full"
+          onclick=""
+        >
+          Login
+        </button>
+      </form>
 
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Password" required>
-        </div>
-
-        <button type="submit">Login</button>
-        <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-            Don’t have an account yet? <a href="signup.html" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>
-        </p>
-    </form>
+      <p class="mt-4 text-sm text-gray-600">
+        Dont't have an account yet?
+        <a href="SignUp.html" class="text-blue-500">Signup</a>
+      </p>
+    </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            console.log('Username:', username);
-            console.log('Password:', password);
-    
-            // Assuming the dashboard page is named "dashboard.html"
-            // You can replace it with the actual URL of your dashboard page
-            setTimeout(function() {
-            alert('Welcome, ' + username + '!');
-            // Redirect to dashboard after 1 seconds
-            window.location.href = "dashboard.html";
-            }, 1000);// 1000 milliseconds = 1 seconds
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          document.getElementById("overlay").hidden = false;
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
 
-            var formData = {
+          var formData = {
             email: email,
-            username: username,
-            password: password
-            };
+            password: password,
+          };
 
-  // Send data to backend
-            fetch('http://localhost:3000/formData', {
-            method: 'POST',
+          fetch("http://localhost:8080/api/user/login", {
+            method: "POST",
             headers: {
-            'Content-Type': 'application/json'
-             },
-            body: JSON.stringify(formData)
-             })
-             .then(response => {
-            if (!response.ok) {
-                throw new Error('Login failed');
-            }
-            // Extract the bearer token from the response
-            return response.json();
-        })
-        .then(data => {
-            const token = data.token;
-            // Store the token in local storage
-            localStorage.setItem('token', token);
-            // Redirect to the dashboard page
-            window.location.href = "dashboard.html";
-        })
-            .catch(error => {
-            console.error('Error:', error);
-        // Handle network errors or any other unexpected errors
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                return response.json().then((errorData) => {
+                  // If response is not ok, handle the error
+                  document.getElementById(
+                    "login-message"
+                  ).innerHTML = `<p style='color: red;'>Error: ${errorData.Message}</p>`;
+                  throw new Error(errorData.Message);
+                });
+              }
+              return response.json();
+            })
+            .then((data) => {
+              // Clear form fields
+              document.getElementById("loginForm").reset();
+              // Display success message or perform any other actions
+              document.getElementById(
+                "login-message"
+              ).innerHTML = `<p style='color: green;'>${data.Message}</p>`;
+              console.log("asodskp");
+              const token = data.Token;
+              // Store the token in local storage
+              localStorage.setItem("token", token);
+              // Redirect to the dashboard page after a delay (e.g., 2 seconds)
+              setTimeout(function () {
+                document.getElementById("overlay").hidden = true;
+                window.location.replace("searchProducts.html");
+              }, 1500);
+            })
+            .catch((error) => {
+              setTimeout(function () {
+                document.getElementById("overlay").hidden = true;
+              }, 1500);
+              console.error("Error:", error);
+              // Handle network errors or any other unexpected errors
+            });
         });
-        });
-
     </script>
-    
-</body>
+  </body>
 </html>

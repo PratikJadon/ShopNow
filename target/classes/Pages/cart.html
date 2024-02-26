@@ -1,0 +1,41 @@
+<!-- cart.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="h-screen">
+<div class="container mx-auto px-6 mt-8">
+    <h2 class="text-2xl font-semibold mb-4">Shopping Cart</h2>
+    <div id="cartItems" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-8">
+        <!-- Cart items will be dynamically added here -->
+    </div>
+</div>
+
+<script>
+    // Iterate through the items in the cart and display them
+    const cartItemsContainer = document.getElementById("cartItems");
+    for (const item of cart) {
+      const cartItemTemplate = document.getElementById("cartItemTemplate").cloneNode(true);
+      cartItemTemplate.style.display = "block";
+      cartItemTemplate.querySelector("#cartItemName").textContent = item.title;
+      cartItemTemplate.querySelector("#cartItemPrice").textContent = `$${item.price.toFixed(2)}`;
+      cartItemsContainer.appendChild(cartItemTemplate);
+    }
+</script>
+<script src="checkout.js"></script>
+<!-- Cart Item Template (hidden by default) -->
+<div id="cartItemTemplate" class="hidden bg-white p-4 rounded-lg shadow-md">
+    <div>
+        <h3 id="cartItemName" class="text-xl font-semibold mb-2"></h3>
+        <p id="cartItemPrice" class="text-indigo-700 font-bold mb-2"></p>
+    </div>
+</div>
+</body>
+</html>
+
+
+

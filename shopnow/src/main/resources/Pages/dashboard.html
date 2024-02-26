@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <link href="loading.css" rel="stylesheet" />
+    <style>
+      .sticky {
+        position: fixed;
+        top: 0;
+        width: 100%;
+      }
+    </style>
+    <!-- <link rel="stylesheet" href="rating.css" /> -->
+  </head>
+  <body class="h-screen">
+    <script
+      src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js"
+      defer
+    ></script>
+
+    <div x-data="{ cartOpen: false , isOpen: false }" class="bg-white">
+      <header id="header">
+        <div class="container mx-auto">
+          <div
+            class="bg-gradient-to-tl flex flex-col"
+            style="background-color: #944e63"
+          >
+            <div class="flex items-center justify-between bg-gradient-to-tl">
+              <div class="hidden w-full text-gray-600 md:flex md:items-center">
+                <nav
+                  :class="isOpen ? '' : 'hidden'"
+                  class="sm:flex sm:justify-center sm:items-center mt-4"
+                >
+                  <div
+                    class="w-full whitespace-nowrap text-white md:text-left text-2xl font-semibold mr-5 ml-5 mb-2"
+                  >
+                    Shop Now
+                  </div>
+                  <div class="flex flex-col sm:flex-row">
+                    <a
+                      class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
+                      href="dashboard.html"
+                      >Home</a
+                    >
+                    <a
+                      class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
+                      href="searchProducts.html"
+                      >Shop</a
+                    >
+                  </div>
+                </nav>
+                <div class="flex items-center justify-end w-full mr-10">
+                  <button
+                    onclick="togglecart()"
+                    class="text-white focus:outline-none mx-4 sm:mx-0"
+                  >
+                    <svg
+                      class="h-5 w-5"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                      ></path>
+                    </svg>
+                  </button>
+                  <button class="text-white mx-5" onclick="logout()">
+                    Logout
+                  </button>
+                  <div class="flex sm:hidden">
+                    <button
+                      @click="isOpen = !isOpen"
+                      type="button"
+                      class="text-gray-600 hover:text-gray-500 focus:outline-none focus:text-gray-500"
+                      aria-label="toggle menu"
+                    >
+                      <svg viewBox="0 0 24 24" class="h-6 w-6 fill-current">
+                        <path
+                          fill-rule="evenodd"
+                          d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div
+        id="cartslider"
+        class="fixed right-0 top-0 max-w-xs w-full h-full px-6 py-4 transition duration-300 transform overflow-y-auto bg-white border-l-2 border-gray-300 translate-x-full ease-in"
+      >
+        <div class="flex items-center justify-between">
+          <h3 class="text-2xl font-medium text-gray-700">Your cart</h3>
+          <button
+            onclick="togglecart()"
+            class="text-gray-600 focus:outline-none"
+          >
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <hr class="my-3" />
+        <div id="cart-container"></div>
+      </div>
+      <div
+        hidden
+        id="static-modal"
+        data-modal-backdrop="static"
+        tabindex="-1"
+        aria-hidden="true"
+        class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+        style="background-color: rgba(27, 26, 26, 0.693); height: 100%"
+      >
+        <div class="relative top-40 m-auto p-4 w-full max-w-2xl max-h-full">
+          <!-- Modal content -->
+          <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div
+              class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"
+            >
+              <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                Payment
+              </h3>
+              <!-- <button
+              type="button"
+              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              data-modal-hide="static-modal"
+            >
+              <svg
+                class="w-3 h-3"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 14"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                />
+              </svg>
+              <span class="sr-only">Close modal</span>
+            </button> -->
+            </div>
+            <!-- Modal body -->
+            <div class="p-4 md:p-5 space-y-4">
+              <img class="m-auto" src="qr.png" />
+            </div>
+            <!-- Modal footer -->
+            <div
+              class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600"
+            >
+              <button
+                onclick="closemodal()"
+                data-modal-hide="static-modal"
+                type="button"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Paid
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <main class="my-8">
+        <div class="container mx-auto px-6">
+          <div
+            id="productList"
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-8"
+          >
+            <!-- Products will be dynamically added here -->
+          </div>
+
+          <!-- <button onclick="addtoast()">lele</button> -->
+          <div id="toastcontainer" class="fixed bottom-0 right-0"></div>
+        </div>
+      </main>
+
+      <div
+        id="productCardTemplate"
+        class="bg-white p-4 rounded-lg shadow-md w-47"
+        hidden
+      >
+        <img
+          id="productImage"
+          alt="Product Image"
+          class="mb-4 w-full h-40 object-cover rounded-md"
+        />
+        <div>
+          <h3 id="productName" class="text-xl font-semibold mb-2"></h3>
+          <p id="productDescription" class="text-gray-600 mb-2"></p>
+          <p id="productPrice" class="text-indigo-700 font-bold mb-2"></p>
+        </div>
+        <button
+          class="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+        >
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const itemsPerPage = 9;
+      let currentPage = 1;
+      let products = [];
+
+      async function fetchProducts() {
+        try {
+          // Assuming you have an endpoint to fetch products from your Spring Boot API
+          const response = await fetch("http://localhost:8080/api/products");
+          products = await response.json();
+          console.log("Fetched products:", products); // Log fetched products
+          return products;
+        } catch (error) {
+          console.error("Error fetching products:", error);
+          return [];
+        }
+      }
+
+      async function renderProducts() {
+        await fetchProducts();
+        const token = await localStorage.getItem("token");
+        const productList = document.getElementById("productList");
+        // productList.innerHTML = "";
+
+        const startIndex = 0;
+        const endIndex = itemsPerPage;
+        for (let i = startIndex; i < endIndex && i < products.Size; i++) {
+          const product = products.Data[i];
+
+          // Deep clone the product card template
+          const productCardClone = document
+            .getElementById("productCardTemplate")
+            .cloneNode(true);
+
+          // Set a new id for the cloned template to avoid conflicts
+          productCardClone.id = `productCardClone${i}`;
+
+          // Populate product card
+          productCardClone.style.display = "block";
+          productCardClone.querySelector("#productImage").src = product.photos;
+          productCardClone.querySelector("#productName").textContent =
+            product.title;
+          productCardClone.querySelector("#productDescription").textContent =
+            product.attributes != null
+              ? Object.entries(product.attributes)
+              : "";
+          productCardClone.querySelector(
+            "#productPrice"
+          ).textContent = `$${product.price.toFixed(2)}`;
+          productCardClone
+            .querySelector("#addcartbtn")
+            .setAttribute("dataagr1", product.id);
+          productCardClone
+            .querySelector("#addcartbtn")
+            .setAttribute("dataagr2", token);
+
+          // Append the cloned template to the container
+          productList.appendChild(productCardClone);
+        }
+
+        // Remove the original template from the DOM
+        const originalTemplate = document.getElementById("productCardTemplate");
+        originalTemplate.parentNode.removeChild(originalTemplate);
+      }
+
+      function nextPage() {
+        currentPage++;
+        renderProducts();
+      }
+
+      function prevPage() {
+        if (currentPage > 1) {
+          currentPage--;
+          renderProducts();
+        }
+      }
+
+      // Initial rendering
+      fetchProducts().then(renderProducts);
+    </script>
+  </body>
+</html>

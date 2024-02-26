@@ -3,156 +3,259 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ShopHere</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>ShopNow</title>
+    <link rel="stylesheet" href="loading.css" />
   </head>
-  <body>
-    <style>
-      /* styles.css */
-      body {
-        height: 100vh;
-        background-image: url("bg.jpg");
-        background-size: cover; /* Adjusts the background image size to cover the entire container */
-        background-repeat: no-repeat; /* Prevents the background image from repeating */
-        background-position: center; /* Centers the background image */
-      }
-      .container {
-        max-width: 400px;
-        margin: 0 auto;
-        margin-left: 10%;
-        padding: 20px;
-        margin-top: 5rem;
-        border-radius: 50px;
-        background: #5d7b9a;
-      }
-      h1 {
-        text-align: center;
-      }
-      .form-group {
-        margin-bottom: 20px;
-      }
-      label {
-        display: block;
-        margin-bottom: 5px;
-      }
-      input[type="text"],
-      input[type="email"],
-      input[type="password"] {
-        width: 95%;
-        padding: 10px;
-        background-color: #ffffff;
-        border: none;
-        border-radius: 0.5rem;
-        cursor: pointer;
-      }
-      button {
-        width: 100%;
-        padding: 10px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      button:hover {
-        background-color: #0056b3;
-      }
-    </style>
-    <div class="container">
-      <h1>Sign Up</h1>
-      <form id="signup-form">
-        <div class="form-group">
-          <label for="fullname">Full Name</label>
-          <input type="text" id="fullname" name="fullname" required />
+  <body
+    style="background-color: #b47b84"
+    class="h-screen w-full py-16 px-4 flex items-center justify-center"
+  >
+    <div id="overlay" hidden>
+      <div class="spinner-wrapper">
+        <div class="spinner">
+          <div class="sk-folding-cube">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" required />
-        </div>
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" name="username" required />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" required />
-        </div>
-        <div class="form-group">
-          <label for="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            required
-          />
-        </div>
-        <button type="submit">Sign Up</button>
-        <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-          Already have an account? Login now
-          <a
-            href="index.html"
-            class="font-medium text-primary-600 hover:underline dark:text-primary-500"
-            >click here!</a
-          >
-        </p>
-      </form>
+      </div>
     </div>
-    <script>
-      // script.js
-      document
-        .getElementById("signup-form")
-        .addEventListener("submit", async function (event) {
-          event.preventDefault();
-          // Get form values
-          var fullname = document.getElementById("fullname").value;
-          var email = document.getElementById("email").value;
-          var username = document.getElementById("username").value;
-          var password = document.getElementById("password").value;
-          var regexUpperCase = /[A-Z]/; // Match uppercase letters
-          var regexLowerCase = /[a-z]/; // Match lowercase letters
-          var regexNumeric = /[0-9]/; // Match numeric digits
-          if (!regexUpperCase.test(password)) {
-            alert("Password must contain at least one uppercase letter.");
-            return; // Exit the function to prevent further execution
-          }
-          if (!regexLowerCase.test(password)) {
-            alert("Password must contain at least one lowercase letter.");
-            return; // Exit the function to prevent further execution
-          }
-          if (!regexNumeric.test(password)) {
-            alert("Password must contain at least one numeric digit.");
-            return; // Exit the function to prevent further execution
-          }
-          var confirmPassword =
-            document.getElementById("confirmPassword").value;
-          // Check if passwords match
-          if (password !== confirmPassword) {
-            alert("Passwords do not match");
+    <div class="bg-white p-8 rounded shadow-md w-96">
+      <h2 class="text-2xl font-semibold mb-4 text-center fa-align-center">
+        Sign Up
+      </h2>
+      <div id="signup-message"></div>
+
+      <div class="mb-4">
+        <label for="fullname" class="block text-sm font-medium text-gray-600"
+          >Full Name</label
+        >
+        <input
+          type="text"
+          id="fullname"
+          name="fullname"
+          class="mt-1 p-2 w-full border rounded-md"
+          required
+        />
+        <span
+          class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+          id="errorfullname"
+          hidden
+        >
+        </span>
+      </div>
+      <div class="mb-4">
+        <label for="username" class="block text-sm font-medium text-gray-600"
+          >Username</label
+        >
+        <input
+          type="text"
+          id="username"
+          name="username"
+          class="mt-1 p-2 w-full border rounded-md"
+          required
+        />
+      </div>
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-gray-600"
+          >Email</label
+        >
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="mt-1 p-2 w-full border rounded-md"
+          required
+        />
+        <span
+          class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+          id="erroremail"
+        >
+        </span>
+      </div>
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-medium text-gray-600"
+          >Password</label
+        >
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="mt-1 p-2 w-full border rounded-md"
+          required
+        />
+        <span
+          class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+          id="errorpassword"
+          hidden
+        >
+        </span>
+      </div>
+      <div class="mb-4">
+        <label
+          for="confirmPassword"
+          class="block text-sm font-medium text-gray-600"
+          >Confirm Password</label
+        >
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          class="mt-1 p-2 w-full border rounded-md"
+          required
+        />
+        <span
+          class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+          id="errorconfirmPassword"
+          hidden
+        >
+        </span>
+      </div>
+      <button
+        onclick="submit()"
+        style="background-color: #944e63"
+        class="text-white p-2 rounded-md w-full"
+      >
+        Sign Up
+      </button>
+
+      <p class="mt-4 text-sm text-gray-600">
+        Already have an account?
+        <a href="login.html" class="text-blue-500">Log in</a>
+      </p>
+    </div>
+    <div id="toastcontainer" class="fixed bottom-0 right-0"></div>
+  </body>
+  <script src="toastComponent.js"></script>
+  <script>
+    var isFormValid = true;
+    function addValidtionError(field, message) {
+      var span = document.getElementById("error" + field);
+      span.innerHTML = message;
+      span.hidden = false;
+      isFormValid = false;
+      console.log(field, span);
+      var input = document.getElementById(field);
+      input.addEventListener("click", (e) => {
+        span.innerHTML = "";
+      });
+    }
+
+    // script.js
+
+    async function submit(event) {
+      document.getElementById("signup-message").innerHTML = "";
+      console.log("Submitting");
+      // Get form values
+      var fullname = document.getElementById("fullname").value;
+      var email = document.getElementById("email").value;
+      var username = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+      var regexUpperCase = /[A-Z]/; // Match uppercase letters
+      var regexLowerCase = /[a-z]/; // Match lowercase letters
+      var regexNumeric = /[0-9]/; // Match numeric digits
+      var regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!regexEmail.test(email)) {
+        addValidtionError("email", "Please provide a correct email.");
+      }
+      if (!regexUpperCase.test(password)) {
+        addValidtionError(
+          "password",
+          "Password must contain at least one uppercase letter."
+        );
+      } else if (!regexLowerCase.test(password)) {
+        addValidtionError(
+          "password",
+          "Password must contain at least one lowercase letter."
+        );
+      } else if (!regexNumeric.test(password)) {
+        addValidtionError(
+          "password",
+          "Password must contain at least one numeric digit."
+        );
+      }
+
+      var confirmPassword = document.getElementById("confirmPassword").value;
+      // Check if passwords match
+      if (password !== confirmPassword) {
+        addValidtionError("confirmPassword", "Passwords do not match");
+      }
+      if (!isFormValid) {
+        isFormValid = true;
+        return;
+      }
+
+      const inputs = document.getElementsByTagName("input");
+      for (let i = 0; i < inputs.length; i++) {
+        inputs[i].value = "";
+      }
+      var formData = {
+        fullname: fullname,
+        email: email,
+        username: username,
+        password: password,
+      };
+      document.getElementById("overlay").hidden = false;
+      try {
+        // Send data to backend
+        const response = await fetch("http://localhost:8080/api/user/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        setTimeout(function () {
+          document.getElementById("overlay").hidden = true;
+          // document.getElementById(
+          //   "signup-message"
+          // ).innerHTML = `<p style='color: ${
+          //   data.Success ? "green" : "red"
+          // };'>INFO: ${data.Message}</p>`;
+          if (!data.Success) {
+            addErrortoast(data.Message);
             return;
           }
-          var formData = {
-            fullname: fullname,
-            email: email,
-            username: username,
-            password: password,
-          };
-          try {
-            // Send data to backend
-            const response = await fetch(
-              "http://localhost:8080/api/usersignup",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-              }
-            );
-            const data = await response.text();
-            console.log(data);
-          } catch (error) {
-            console.log("Some error occured.");
-          }
-        });
-    </script>
-  </body>
+          window.location.replace("login.html");
+        }, 1600);
+      } catch (error) {
+        console.log("Some error occurred.");
+      }
+    }
+
+    // TOAST
+    function addErrortoast(message) {
+      var container = document.getElementById("toastcontainer");
+      var nd = document.createElement("div");
+      nd.setAttribute(
+        "class",
+        "transition duration-300 transform translate-y-full ease-in"
+      );
+      container.insertBefore(nd, container.firstChild);
+      // container.appendChild(nd);
+      nd.innerHTML += getDangerToast(message);
+      setTimeout(() => {
+        nd.classList.remove("translate-y-full");
+        nd.classList.remove("ease-in");
+        nd.classList.add("translate-y-0");
+        nd.classList.add("ease-out");
+      }, 50);
+
+      setTimeout(() => {
+        nd.classList.add("translate-x-full");
+        nd.classList.add("ease-out-1");
+      }, 3000);
+
+      setTimeout(() => {
+        container.removeChild(nd);
+      }, 5000);
+    }
+  </script>
 </html>
